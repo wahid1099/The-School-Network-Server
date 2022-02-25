@@ -3,7 +3,6 @@ const app = express();
 const cors = require("cors");
 const dotenv = require("dotenv").config();
 const fileUpload = require("express-fileupload");
-
 const connectDB = require("./config/db");
 const port = process.env.PORT || 5000;
 
