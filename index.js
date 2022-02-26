@@ -8,9 +8,9 @@ const connectDB = require("./config/db");
 const port = process.env.PORT || 5000;
 
 // import route
-const principal = require("./routes/Principal/PrincipalRoute")
+const principal = require("./routes/Principal/PrincipalRoute");
 const student = require("./routes/Student/student");
-const Shared = require("./routes/Shared/SharedRoute")
+const Shared = require("./routes/Shared/SharedRoute");
 
 // ---Database connection
 connectDB();
@@ -25,17 +25,16 @@ app.use("/", Shared);
 // -----------Shared Roudets End---------//
 
 // -----------Principal Roudets start---------//
-app.use("/", principal); 
+app.use("/", principal);
 // -----------Principal Roudets End---------//
 
 // -----------Student Roudets start---------//
 app.use("/", student);
 // -----------Student Roudets End---------//
 
-app.get("/", (res, req) => {
-  res.send("School Network Server is Connected");
+app.get("/", (req, res) => {
+    res.send("School Network Server is Connected");
 });
-app.listen(port, (res, req) => {
-  console.log("School Network Port Is", port);
+app.listen(port, (req, res) => {
+    console.log("School Network Port Is", port);
 });
-
