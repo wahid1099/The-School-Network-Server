@@ -37,6 +37,6 @@ app.use("/", teacher);
 app.get("/", (res, req) => {
     res.send("School Network Server is Connected");
 });
-app.listen(port, (req, res) => {
+app.listen(port, (res, req) => {
     console.log("School Network Port Is", port);
 });
