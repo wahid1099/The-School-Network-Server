@@ -39,6 +39,4 @@ router.get("/requestCare", async (req, res) => {
   }
 });
 
-// Assignment Submit
-
 module.exports = router;
