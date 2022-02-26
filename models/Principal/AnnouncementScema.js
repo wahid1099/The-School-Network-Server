@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const NoticeSchema = mongoose.Schema({
+const AnnouncementSchema = mongoose.Schema({
     title: {
         type: String,
         required: false
@@ -17,4 +17,4 @@ const NoticeSchema = mongoose.Schema({
     }
 })
  
-module.exports = NoticeSchema;
+module.exports = AnnouncementSchema;
