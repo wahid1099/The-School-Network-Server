@@ -77,6 +77,9 @@ const HotelScema = mongoose.Schema({
         type: String,
         required: false
     },
+    img:{
+        type: mongoose.Mixed
+    },
     teacherphone: String
 })
 
