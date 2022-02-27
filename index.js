@@ -10,7 +10,7 @@ const port = process.env.PORT || 5000;
 const principal = require("./routes/Principal/PrincipalRoute");
 const student = require("./routes/Student/student");
 const Shared = require("./routes/Shared/SharedRoute");
-const teacher = require("./routes/Teacher/Teacher")
+const teacher = require("./routes/Teacher/Teacher");
 
 // ---Database connection
 connectDB();
@@ -40,4 +40,3 @@ app.get("/", (res, req) => {
 app.listen(port, (res, req) => {
   console.log("School Network Port Is", port);
 });
-
