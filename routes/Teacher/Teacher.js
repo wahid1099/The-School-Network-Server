@@ -4,7 +4,6 @@ const RequestCare = require("../../models/Student/requestCare");
 const ResultSchema = require("../../models/Shared/ResultSchema");
 const ResultCollection = new mongoose.model("ResultCollection", ResultSchema)
 
-
 //geting all student extra care
 router.get("/requestCare", async (req, res) => {
 
@@ -23,4 +22,5 @@ router.post("/PublishResult", async (req, res) => {
     }
 
 });
+
 module.exports = router;

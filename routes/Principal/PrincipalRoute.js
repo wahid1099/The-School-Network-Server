@@ -107,4 +107,7 @@ router.put("/PutEditAnnouncement/:id", async (req, res) => {
     const notice = await UserAnnouncement.findOneAndUpdate(query, { $set: { title: req.body.title, description: req.body.description }})
     res.send(notice)
 });
+
+
+
 module.exports = router;

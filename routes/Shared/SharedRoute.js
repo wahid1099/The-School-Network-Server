@@ -2,7 +2,9 @@ const router = require("express").Router();
 const mongoose = require('mongoose');
 const userSchema = require('../../models/Shared/UserSchema')
 const UserCollection = new mongoose.model("UserCollection", userSchema)
-
+const ResultSchema = require("../../models/Shared/ResultSchema");
+const ResultCollection = new mongoose.model("ResultCollection", ResultSchema)
+const ObjectId = require('mongodb').ObjectId;
 
 //Adding user to database
 router.post("/addUser", async (req, res) => {
@@ -28,5 +30,24 @@ router.get("/checkUser", async (req, res) => {
         res.send({none: 'norole'})
     }
 });
+//geting all students for manage
+router.get("/GetAllStudents", async (req, res) => {
+    const studentclass = req.query.studentclass;
+    const students = await UserCollection.find({class: studentclass})
+    res.send(students)
+});
 
+//geting  student individual performance
+router.get("/IndividualPerformance/:id", async (req, res) => {
+    const id = req.params.id;
+    const studentInfo = await UserCollection.findOne({_id: ObjectId(id)})
+    if(studentInfo.roll){
+        const result = await ResultCollection.find({class: studentInfo.class, name: studentInfo.name, roll: studentInfo.roll})
+    
+        res.send(result)
+    }
+    else{
+        res.send({error: 'result not found'})
+    }
+});
 module.exports = router;
