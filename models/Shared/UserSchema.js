@@ -1,87 +1,87 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const HotelScema = mongoose.Schema({
     class: {
         type: String,
-        required: false
+        required: false,
     },
-    section:  {
+    section: {
         type: String,
-        required: false
+        required: false,
     },
-    roll:  {
+    roll: {
         type: String,
-        required: false
+        required: false,
     },
-    name:  {
+    name: {
         type: String,
-        required: false
+        required: false,
     },
-    bloodGroup:  {
+    bloodGroup: {
         type: String,
-        required: false
+        required: false,
     },
-    age:  {
+    age: {
         type: String,
-        required: false
+        required: false,
     },
-    email:  {
+    email: {
         type: String,
-        required: false
+        required: false,
     },
-    password:  {
+    password: {
         type: String,
-        required: false
+        required: false,
     },
-    birthCertificateNo:  {
+    birthCertificateNo: {
         type: String,
-        required: false
+        required: false,
     },
-    phone:  {
+    phone: {
         type: String,
-        required: false
+        required: false,
     },
-    birthDate:  {
+    birthDate: {
         type: String,
-        required: false
+        required: false,
     },
-    fatherName:  {
+    fatherName: {
         type: String,
-        required: false
+        required: false,
     },
-    motherName:  {
+    motherName: {
         type: String,
-        required: false
+        required: false,
     },
-    address:  {
+    address: {
         type: String,
-        required: false
+        required: false,
     },
-    role:  {
+    role: {
         type: String,
-        required: false
+        required: false,
     },
-    teachername:  {
+    teachername: {
         type: String,
-        required: false
+        required: false,
     },
-    teacherclass:  {
+    teacherclass: {
         type: String,
-        required: false
+        required: false,
     },
-    teachersection:  {
+    teachersection: {
         type: String,
-        required: false
+        required: false,
     },
-    teachernid:  {
+    teachernid: {
         type: String,
-        required: false
+        required: false,
     },
-    img:{
-        type: mongoose.Mixed
+    img: {
+        type: mongoose.Mixed,
+        required: true,
     },
-    teacherphone: String
-})
+    teacherphone: String,
+});
 
 module.exports = HotelScema;
-

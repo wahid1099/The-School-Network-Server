@@ -44,4 +44,22 @@ router.get("/TeacherProfile", async (req, res) => {
     res.send(response);
 });
 
+// Update teachers profile picture
+router.put("/UpdateTeacherDP", async (req, res) => {
+    const email = req.query.email;
+    const front = req.files.userImage.data;
+    // console.log(email);
+
+    const encodedpic1 = front.toString("base64");
+    const img = Buffer.from(encodedpic1, "base64");
+
+    const query = { email: email };
+    const update = await userCollection.findOneAndUpdate(
+        query,
+        { $set: { img: img } },
+        { upsert: true }
+    );
+    res.send(update);
+});
+
 module.exports = router;
