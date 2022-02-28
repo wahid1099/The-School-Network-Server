@@ -6,6 +6,9 @@ const { db } = require("../../models/Student/studentModels");
 const ResultSchema = require("../../models/Shared/ResultSchema");
 const ResultCollection = new mongoose.model("ResultCollection", ResultSchema);
 
+const userSchema = require("../../models/Shared/UserSchema");
+const userCollection = new mongoose.model("usercollection", userSchema);
+
 //Student notes Submit
 router.post("/notesSubmit", async (req, res) => {
   const newPost = new Student(req.body);
@@ -42,11 +45,6 @@ router.get("/requestCare", async (req, res) => {
   }
 });
 
-<<<<<<< HEAD
-//  Student Assignment submit
-
-// router.post("/studentFileUpload", async (req, res) => {});
-=======
 // fetch the result data
 router.get("/results", async (req, res) => {
   try {
@@ -56,6 +54,30 @@ router.get("/results", async (req, res) => {
     res.status(500).json(err);
   }
 });
->>>>>>> b4d653b42df0b991400df6874c7acd07eaba9b01
+
+// Get single student information
+router.get("/studentProfile", async (req, res) => {
+  const studentEmail = req.query.email;
+  const response = await userCollection.findOne({ email: studentEmail });
+  res.send(response);
+});
+
+// Update single student profile picture
+router.put("/updateStudentPP", async (req, res) => {
+  const email = req.query.email;
+  const front = req.files.userImage.data;
+  // console.log(email);
+
+  const encodedpic1 = front.toString("base64");
+  const img = Buffer.from(encodedpic1, "base64");
+
+  const query = { email: email };
+  const update = await userCollection.findOneAndUpdate(
+    query,
+    { $set: { img: img } },
+    { upsert: true }
+  );
+  res.send(update);
+});
 
 module.exports = router;

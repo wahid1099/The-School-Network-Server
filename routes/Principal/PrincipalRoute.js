@@ -110,11 +110,5 @@ router.put("/PutEditAnnouncement/:id", async (req, res) => {
   });
   res.send(notice);
 });
-<<<<<<< HEAD
-module.exports = router;
-=======
-
-
 
 module.exports = router;
->>>>>>> b4d653b42df0b991400df6874c7acd07eaba9b01
