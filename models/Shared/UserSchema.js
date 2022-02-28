@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const HotelScema = mongoose.Schema({
+const UserSchema = mongoose.Schema({
     class: {
         type: String,
         required: false
@@ -83,5 +83,5 @@ const HotelScema = mongoose.Schema({
     teacherphone: String
 })
 
-module.exports = HotelScema;
+module.exports = UserSchema;
 
