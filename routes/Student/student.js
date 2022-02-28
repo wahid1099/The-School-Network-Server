@@ -1,7 +1,10 @@
 const router = require("express").Router();
+const mongoose = require("mongoose");
 const Student = require("../../models/Student/studentModels");
 const RequestCare = require("../../models/Student/requestCare");
 const { db } = require("../../models/Student/studentModels");
+const ResultSchema = require("../../models/Shared/ResultSchema");
+const ResultCollection = new mongoose.model("ResultCollection", ResultSchema);
 
 //Student notes Submit
 router.post("/notesSubmit", async (req, res) => {
@@ -39,8 +42,20 @@ router.get("/requestCare", async (req, res) => {
   }
 });
 
+<<<<<<< HEAD
 //  Student Assignment submit
 
 // router.post("/studentFileUpload", async (req, res) => {});
+=======
+// fetch the result data
+router.get("/results", async (req, res) => {
+  try {
+    const results = await ResultCollection.find({});
+    res.status(200).json(results);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+>>>>>>> b4d653b42df0b991400df6874c7acd07eaba9b01
 
 module.exports = router;
