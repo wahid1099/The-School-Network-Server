@@ -35,6 +35,7 @@ router.post("/PublishImageNotice", async (req, res) => {
     console.log(er);
   }
 });
+
 //Principal Geting Previous Notice
 router.get("/PreviousNotice", async (req, res) => {
   const notice = await TeacherNotice.find({});
@@ -47,7 +48,9 @@ router.delete("/DeleteNotice/:id", async (req, res) => {
 });
 //Principal geting edit  Notice
 router.get("/GetEditNotice/:id", async (req, res) => {
-  const notice = await TeacherNotice.findOne({ _id: ObjectId(req.params.id) });
+  const notice = await TeacherNotice.findOne({
+    _id: ObjectId(req.params.id),
+  });
   res.send(notice);
 });
 //Principal geting edit  Notice
@@ -110,5 +113,4 @@ router.put("/PutEditAnnouncement/:id", async (req, res) => {
   });
   res.send(notice);
 });
-
 module.exports = router;
