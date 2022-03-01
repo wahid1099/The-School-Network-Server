@@ -62,4 +62,21 @@ router.put("/UpdateTeacherDP", async (req, res) => {
     res.send(update);
 });
 
+// Add teacher info
+router.put("/AddTeacherInfo", async (req, res) => {
+    const personalStatement = req.body.personalStatement;
+    const education = req.body.education;
+    const email = req.body.email;
+    // console.log(statement, education, email);
+    const query = { email: email };
+    const update = await userCollection.findOneAndUpdate(
+        query,
+        {
+            $set: { personalStatement, education },
+        },
+        { upsert: true }
+    );
+    res.send(update);
+});
+
 module.exports = router;
