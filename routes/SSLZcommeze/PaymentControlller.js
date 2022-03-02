@@ -1,192 +1,82 @@
-const SSLCommerz = require("ssl-commerz-node");
-const PaymentSession = SSLCommerz.PaymentSession;
+// const SSLCommerz = require("ssl-commerz-node");
+// const SSLCommerzPayment = require("sslcommerz");
 const shortid = require("shortid");
 const Order = require("../../models/PaymentModel/PaymentModel");
 require("dotenv").config();
-
-// For live payment set first parameter `false` and for sandbox set it `true`
+const router = require("express").Router();
+const { v4: uuidv4 } = require("uuid");
+const SSLCommerzPayment = require("sslcommerz-lts");
 
 // STORE_ID=thesc621d932555ad7
 // STORE_PASSWORD=thesc621d932555ad7@ssl
 
-const payment = new PaymentSession(
-  true,
+// exports.SSLCommerz_payment_init = async (req, res) => {};
+const sslcommer = new SSLCommerzPayment(
   process.env.STORE_ID,
-  process.env.STORE_PASSWORD
+  process.env.STORE_PASSWORD,
+  false
 );
+router.post("/init", async (req, res) => {
+  console.log("hitting");
+  const { totalAmount, studentInfo, shippingInfo } = req.body;
+  const { studentName, studentEmail, studentId, studentClass, studentPhone } =
+    studentInfo;
 
-exports.SSLCommerz_payment_init = async (req, res) => {
-  // console.log(req.body);
-
-  const {
-    cartItems,
-    totalAmount,
-    deliveryMethod,
-    numItem,
-    customerInfo,
-    shippingInfo,
-  } = req.body;
-
+  const { adress, road, permentAdress } = shippingInfo;
   const transactionId = `transaction_${shortid.generate()}`;
-  // let paymentDone = false;
+  const data = {
+    total_amount: totalAmount,
+    currency: "BDT",
+    tran_id: transactionId, // use unique tran_id for each api call
+    success_url: "http://localhost:5000/success",
+    fail_url: "http://localhost:5000/fail",
+    cancel_url: "http://localhost:5000/cancel",
+    ipn_url: "http://localhost:5000/ipn",
+    shipping_method: "Courier",
+    product_name: "Computer.",
+    product_category: "Electronic",
+    product_profile: "general",
+    std_name: studentName,
+    std_email: studentEmail,
+    std_id: studentId,
+    std_class: studentClass,
+    std_phone: studentPhone,
+    cus_add1: "Dhaka",
+    cus_city: "Dhaka",
+    cus_state: "Dhaka",
+    cus_postcode: "1000",
+    cus_country: "Bangladesh",
+    cus_phone: "01711111111",
+    ship_name: "Customer Name",
+    ship_add1: "Dhaka",
+    ship_add2: "Dhaka",
+    ship_city: "Dhaka",
+    ship_state: "Dhaka",
+    ship_postcode: 1000,
+    ship_country: "Bangladesh",
+  };
+  //fault false for sandbox
+  sslcommer.init(data).then((apiResponse) => {
+    // Redirect the user to payment gateway
+    let GatewayPageURL = apiResponse.GatewayPageURL;
+    res.redirect(GatewayPageURL);
+    console.log("Redirecting to: ", GatewayPageURL);
+  });
 
-  if (
-    !(cartItems.length >= 0) ||
-    !(totalAmount > 0) ||
-    !(deliveryMethod.length > 0) ||
-    !(numItem > 0) ||
-    !customerInfo ||
-    !shippingInfo
-  ) {
-    return res.json({ message: "All filled must be required" });
-  } else {
-    try {
-      // Set the urls
-      //SERVER_URL=http://localhost:5000/
-      payment.setUrls({
-        // success: "yoursite.com/success", // If payment Succeed
-        success: `${process.env.SERVER_URL}/api/payment/checkout/success?transactionId=${transactionId}`, // If payment Succeed
-        fail: `${process.env.SERVER_URL}/api/payment/checkout/fail`, // If payment failed
-        cancel: `${process.env.SERVER_URL}/api/payment/checkout/cancel`, // If user cancel payment
-        ipn: `${process.env.SERVER_URL}/ipn`, // SSLCommerz will send http post request in this link
-      });
-      // Set order details
-      payment.setOrderInfo({
-        total_amount: totalAmount, // Number field
-        currency: "BDT", // Must be three character string
-        tran_id: transactionId, // Unique Transaction id
-        emi_option: 0, // 1 or 0
-        multi_card_name: "internetbank", // Do not Use! If you do not customize the gateway list,
-        allowed_bin: "371598,371599,376947,376948,376949", // Do not Use! If you do not control on transaction
-        emi_max_inst_option: 3, // Max instalment Option
-        emi_allow_only: 0, // Value is 1/0, if value is 1 then only EMI transaction is possible
-      });
+  try {
+    const newOrder = new Order({
+      _id: transactionId,
 
-      // Set customer info
-      const {
-        cusName,
-        cusEmail,
-        cusAdd1,
-        cusAdd2,
-        cusCity,
-        cusState,
-        cusPostcode,
-        cusCountry,
-        cusPhone,
-        cusFax,
-      } = customerInfo;
-      payment.setCusInfo({
-        name: cusName,
-        email: cusEmail,
-        add1: cusAdd1,
-        add2: cusAdd2,
-        city: cusCity,
-        state: cusState,
-        postcode: cusPostcode,
-        country: cusCountry,
-        phone: cusPhone,
-        fax: cusFax,
-      });
+      totalAmount,
+      deliveryMethod,
 
-      // Set shipping info
-      const {
-        name,
-        shippingAdd1,
-        shippingAdd2,
-        shippingCity,
-        shippingState,
-        shippingPostcode,
-        shippingCountry,
-      } = shippingInfo;
-      payment.setShippingInfo({
-        method: deliveryMethod, //Shipping method of the order. Example: YES or NO or Courier
-        num_item: numItem,
-        name: name,
-        add1: shippingAdd1,
-        add2: shippingAdd2,
-        city: shippingCity,
-        state: shippingState,
-        postcode: shippingPostcode,
-        country: shippingCountry,
-      });
+      studentInfo,
+      shippingInfo,
 
-      // Set Product Profile
-      payment.setProductInfo({
-        product_name: cartItems.map((i) => i.productName).join(", "),
-        product_category: "School fees",
-        product_profile: "general",
-      });
-
-      // Initiate Payment and Get session key
-      payment.paymentInit().then(async (response) => {
-        // console.log(response);
-        res.send(response["GatewayPageURL"]);
-        // paymentDone = response["status"] === "SUCCESS";
-
-        const newOrder = new Order({
-          _id: transactionId,
-          cartItems: cartItems.map((item) => {
-            return {
-              ...item,
-              productImage: process.env.CLIENT_URL + item.productImage,
-            };
-          }),
-          totalAmount,
-          deliveryMethod,
-          numItem,
-          customerInfo,
-          shippingInfo,
-          transactionId,
-          // paymentDone,
-        });
-        const save = await newOrder.save();
-      });
-    } catch (err) {
-      return res.status(400).json({ error });
-    }
-  }
-};
-
-exports.SSLCommerz_payment_success = async (req, res) => {
-  const { transactionId } = req.query;
-
-  if (!transactionId) {
-    return res.json({ message: "transactionId must be required" });
-  } else {
-    const currentOrder = Order.findByIdAndUpdate(transactionId, {
-      paymentDone: true,
-      updatedAt: Date.now(),
+      paymentDone,
     });
+    const save = await newOrder.save();
+  } catch (e) {}
+});
 
-    currentOrder.exec((err, result) => {
-      if (err) console.log(err);
-      res.redirect(
-        `${process.env.CLIENT_URL}/checkout/success/${transactionId}`
-      );
-    });
-  }
-};
-
-exports.SSLCommerz_payment_fail = (req, res) => {
-  res.redirect(`${process.env.CLIENT_URL}/checkout/fail`);
-};
-
-exports.SSLCommerz_payment_cancel = (req, res) => {
-  res.redirect(`${process.env.CLIENT_URL}/checkout/cancel`);
-};
-
-// -------------------------------- After Success
-
-// console.log(response['sessionkey']);
-//     D37CD2C0A0D322991531D217E194F981
-
-// console.log(response['GatewayPageURL']);
-//     https://sandbox.sslcommerz.com/EasyCheckOut/testcded37cd2c0a0d322991531d217e194f981
-
-// -------------------------------- After Failure (Wrong Store ID)
-
-// console.log(response['status']);
-//     FAILED
-
-// console.log(response['failedreason']);
-//     Store Credential Error Or Store is De-active
+module.exports = router;

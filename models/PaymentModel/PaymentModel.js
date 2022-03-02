@@ -7,10 +7,7 @@ const orderSchema = new mongoose.Schema(
       type: String,
       // default: shortid.generate,
     },
-    cartItems: {
-      type: Array,
-      default: [],
-    },
+
     totalAmount: {
       type: Number,
       default: 0,
@@ -34,29 +31,19 @@ const orderSchema = new mongoose.Schema(
     customerInfo: {
       type: Object,
       default: {
-        cusName: "",
-        cusEmail: "",
-        cusAdd1: "",
-        cusAdd2: "",
-        cusCity: "",
-        cusState: "",
-        cusPostcode: "",
-        cusCountry: "Bangladesh",
-        cusPhone: "",
-        cusFax: "",
+        studentName: "",
+        studentEmail: "",
+        studentId: "",
+        studentClass: "",
+        studentPhone: "",
       },
     },
     shippingInfo: {
       type: Object,
       default: {
-        name: "",
-        shippingAdd1: "",
-        shippingAdd2: "",
-        shippingCity: "",
-        shippingState: "",
-        shippingPostcode: "",
-        shippingCountry: "Bangladesh",
-        cusPhone: "",
+        adress: "",
+        road: "",
+        permentAdress: "",
       },
     },
     // cusName: {
