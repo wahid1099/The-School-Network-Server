@@ -56,12 +56,21 @@ router.get("/results", async (req, res) => {
 
 // fetch specific student from user collection with the help of email
 
-router.get("/filteredStudent/:email", async (req, res) => {
-  const email = req.params.email;
+router.get("/filteredStudent", async (req, res) => {
+  const email = req.query.email;
   console.log(email);
+  const term = req.query.term;
+  const filteredResult = await UserCollection.findOne({ email: email });
+  // console.log(filteredResult);
   try {
-    const filteredResult = await UserCollection.find({ email: email });
-    res.status(200).json(filteredResult);
+    const result = await ResultCollection.findOne({
+      term: term,
+      class: filteredResult.class,
+      roll: filteredResult.roll,
+      name: filteredResult.name,
+    });
+    console.log(result);
+    res.status(200).json(result);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -70,7 +79,7 @@ router.get("/filteredStudent/:email", async (req, res) => {
 // get result according to student information
 
 router.get("/filteredResult", async (req, res) => {
-  const query = req.query;
+  const query = req.query.name;
   console.log(query);
   try {
     const filteredResult = await ResultCollection.find(query);
