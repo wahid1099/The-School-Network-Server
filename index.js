@@ -29,7 +29,7 @@ app.use("/", principal);
 // -----------Principal Roudets End---------//
 
 // -----------Student Roudets start---------//
-app.use("/", student);
+app.use("/student", student);
 // -----------Student Roudets End---------//
 // -----------Student Roudets start---------//
 app.use("/", teacher);
