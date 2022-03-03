@@ -10,10 +10,13 @@ const StudentNoticeCollection = new mongoose.model(
 );
 const userSchema = require("../../models/Shared/UserSchema");
 const userCollection = new mongoose.model("usercollection", userSchema);
+const ObjectId = require('mongodb').ObjectId; 
 
 //geting all student extra care
 router.get("/requestCare", async (req, res) => {
-    const requests = await RequestCare.find(); //here RequestCare is the schema name
+    const teacherclass = req.query.teacherclass;
+
+    const requests = await RequestCare.find({class: teacherclass}); //here RequestCare is the schema name
     res.status(200).json(requests);
 });
 router.post("/PublishResult", async (req, res) => {
@@ -29,6 +32,7 @@ router.post("/PublishResult", async (req, res) => {
 // Publish notice from teachers for students
 router.post("/PublishNotice", async (req, res) => {
     const notice = new StudentNoticeCollection(req.body);
+    
     try {
         await notice.save();
         res.send({ success: "success" });
@@ -79,4 +83,11 @@ router.put("/AddTeacherInfo", async (req, res) => {
     res.send(update);
 });
 
+// Add teacher info
+router.get("/GetIndividualCare/:id", async (req, res) => {
+    const id = req.params.id;
+    console.log('ids', id)
+    const care = await RequestCare.findOne({_id: Object(id)})
+    res.send(care);
+});
 module.exports = router;

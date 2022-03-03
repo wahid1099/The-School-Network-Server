@@ -7,7 +7,7 @@ const requestSchema = mongoose.Schema(
       required: true,
     },
     middleName: {
-      type: "string",
+      type: "string", 
       required: true,
     },
     lastName: {
@@ -15,7 +15,7 @@ const requestSchema = mongoose.Schema(
       required: true,
     },
     class: {
-      type: "number",
+      type: "string",
       required: true,
     },
     date: {
