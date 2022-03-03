@@ -69,7 +69,7 @@ router.get("/filteredStudent", async (req, res) => {
       roll: filteredResult.roll,
       name: filteredResult.name,
     });
-    console.log(result);
+    // console.log(result);
     res.status(200).json(result);
   } catch (err) {
     res.status(500).json(err);
@@ -79,11 +79,13 @@ router.get("/filteredStudent", async (req, res) => {
 // get result according to student information
 
 router.get("/filteredResult", async (req, res) => {
-  const query = req.query.name;
+  const query = req.query;
+  const student = await UserCollection.findOne(query);
+  // res.send(student);
   console.log(query);
   try {
-    const filteredResult = await ResultCollection.find(query);
-    res.status(200).json(filteredResult);
+    const filteredResult = await ResultCollection.find({ name: student.name });
+    res.status(200).json({ filteredResult, student });
   } catch (err) {
     res.status(500).json(err);
   }
