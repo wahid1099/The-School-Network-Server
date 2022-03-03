@@ -3,6 +3,7 @@ const Student = require("../../models/Student/studentModels");
 const RequestCare = require("../../models/Student/requestCare");
 const { db } = require("../../models/Student/studentModels");
 
+
 //Student notes Submit
 router.post("/notesSubmit", async (req, res) => {
   const newPost = new Student(req.body);

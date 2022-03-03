@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const UserSchema = mongoose.Schema({
+const MonthlyPayment = mongoose.Schema({
     class: {
         type: String,
         required: false
@@ -78,14 +78,30 @@ const UserSchema = mongoose.Schema({
         required: false
     },
     img:{
-        type: mongoose.Mixed
+        type: mongoose.Mixed,
+        required: false
     },
-    teacheraddress:  {
+    teacherphone:{
         type: String,
         required: false
     },
-    teacherphone: String
+    month:{
+        type: String,
+        required: false
+    },
+    amount:{
+        type: String,
+        required: false
+    },
+    publishdate:{
+        type: String,
+        required: false
+    },
+    lastdate:{
+        type: String,
+        required: false
+    },
 })
 
-module.exports = UserSchema;
+module.exports = mongoose.model("MonthlyPayment", MonthlyPayment);
 

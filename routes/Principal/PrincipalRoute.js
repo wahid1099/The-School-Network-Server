@@ -4,11 +4,15 @@ const noticeSchema = require('../../models/Principal/NoticeScema')
 const TeacherNotice = new mongoose.model("TeacherNotice", noticeSchema)
 const AnnouncementSchema = require('../../models/Principal/AnnouncementScema')
 const UserAnnouncement = new mongoose.model("UserAnnouncement", AnnouncementSchema)
-const ObjectId = require('mongodb').ObjectId;
+const MonthlyPayment = require('../../models/Principal/PaymentUplaodSchema')
+const userSchema = require('../../models/Shared/UserSchema')
+const UserCollection = new mongoose.model("UserCollection", userSchema)
+const ObjectId = require('mongodb').ObjectId; 
 
 //Publishing Text Notice
 router.post("/publisNotice", async (req, res) => {
     const notice = new TeacherNotice(req.body);
+
     try{
         await notice.save();
         res.send({success: 'success'})
@@ -107,7 +111,15 @@ router.put("/PutEditAnnouncement/:id", async (req, res) => {
     const notice = await UserAnnouncement.findOneAndUpdate(query, { $set: { title: req.body.title, description: req.body.description }})
     res.send(notice)
 });
-
-
-
+//Principal posting monthly payment
+router.post("/UploadMonthlyPayment", async (req, res) => {
+    const notice = await MonthlyPayment.insertMany(req.body)
+    res.send({post: 'successfully'})
+});
+//Principal posting monthly payment
+router.get("/GetAllTeachers", async (req, res) => {
+ 
+    const teacher = await UserCollection.find({role: 'Teacher'})
+    res.send(teacher)
+});
 module.exports = router;

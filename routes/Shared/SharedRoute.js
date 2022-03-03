@@ -9,6 +9,7 @@ const ObjectId = require('mongodb').ObjectId;
 //Adding user to database
 router.post("/addUser", async (req, res) => {
     const User = new UserCollection(req.body);
+    
     try{
         await User.save()
         res.send({useradded: 'addeduser'})
@@ -50,4 +51,5 @@ router.get("/IndividualPerformance/:id", async (req, res) => {
         res.send({error: 'result not found'})
     }
 });
+
 module.exports = router;
