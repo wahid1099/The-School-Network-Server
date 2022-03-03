@@ -10,7 +10,7 @@ const port = process.env.PORT || 5000;
 const principal = require("./routes/Principal/PrincipalRoute");
 const student = require("./routes/Student/student");
 const Shared = require("./routes/Shared/SharedRoute");
-const teacher = require("./routes/Teacher/Teacher")
+const teacher = require("./routes/Teacher/TeacherRoute");
 
 // ---Database connection
 connectDB();
@@ -34,10 +34,9 @@ app.use("/student", student);
 // -----------Student Roudets start---------//
 app.use("/", teacher);
 // -----------Student Roudets End---------//
-app.get("/", (res, req) => {
-  res.send("School Network Server is Connected");
+app.get("/", (req, res) => {
+    res.send("School Network Server is Connected");
 });
-app.listen(port, (res, req) => {
-  console.log("School Network Port Is", port);
+app.listen(port, (req, res) => {
+    console.log("School Network Port Is", port);
 });
-
