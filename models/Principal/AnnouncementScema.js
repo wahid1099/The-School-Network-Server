@@ -13,7 +13,7 @@ const AnnouncementSchema = mongoose.Schema({
         type: mongoose.Mixed
     },
     date:{
-        type : Date, default: Date.now 
+        type : String
     }
 })
  
