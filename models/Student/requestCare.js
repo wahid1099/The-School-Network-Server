@@ -15,7 +15,7 @@ const requestSchema = mongoose.Schema(
       required: true,
     },
     class: {
-      type: "number",
+      type: "string",
       required: true,
     },
     date: {
@@ -40,6 +40,14 @@ const requestSchema = mongoose.Schema(
     },
     description: {
       type: "string",
+      required: true,
+    },
+    status: {
+      type: "string",
+      default: "pending",
+    },
+    roll: {
+      type: "number",
       required: true,
     },
   },
