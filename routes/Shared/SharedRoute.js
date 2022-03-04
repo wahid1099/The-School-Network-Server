@@ -9,7 +9,7 @@ const ObjectId = require('mongodb').ObjectId;
 //Adding user to database
 router.post("/addUser", async (req, res) => {
     const User = new UserCollection(req.body);
-    
+    console.log('user', User)
     try{
         await User.save()
         res.send({useradded: 'addeduser'})
