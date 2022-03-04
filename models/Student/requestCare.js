@@ -42,6 +42,14 @@ const requestSchema = mongoose.Schema(
       type: "string",
       required: true,
     },
+    status: {
+      type: "string",
+      default: "pending",
+    },
+    roll: {
+      type: "number",
+      required: true,
+    },
   },
   {
     timestamps: true,
