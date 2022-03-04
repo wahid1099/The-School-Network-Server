@@ -8,6 +8,7 @@ const ResultCollection = new mongoose.model("ResultCollection", ResultSchema);
 const UserSchema = require("../../models/Shared/UserSchema");
 const UserCollection = new mongoose.model("UserCollection", UserSchema);
 
+
 //Student notes Submit
 router.post("/notesSubmit", async (req, res) => {
   const newPost = new Student(req.body);
