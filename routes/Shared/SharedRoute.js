@@ -23,6 +23,7 @@ router.post("/addUser", async (req, res) => {
 router.get("/checkUser", async (req, res) => {
     const email = req.query.email;
     const user = await UserCollection.findOne({email: email});
+    console.log('email', email)
     if(user.role)  
     {
         res.send({userrole: user.role})
