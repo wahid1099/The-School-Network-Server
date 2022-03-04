@@ -1,137 +1,82 @@
-const SSLCommerz = require("ssl-commerz-node");
-const PaymentSession = SSLCommerz.PaymentSession;
+// const SSLCommerz = require("ssl-commerz-node");
+// const SSLCommerzPayment = require("sslcommerz");
 const shortid = require("shortid");
 const Order = require("../../models/PaymentModel/PaymentModel");
 require("dotenv").config();
-
-// For live payment set first parameter `false` and for sandbox set it `true`
+const router = require("express").Router();
+const { v4: uuidv4 } = require("uuid");
+const SSLCommerzPayment = require("sslcommerz-lts");
 
 // STORE_ID=thesc621d932555ad7
 // STORE_PASSWORD=thesc621d932555ad7@ssl
 
-const payment = new PaymentSession(
-  false,
+// exports.SSLCommerz_payment_init = async (req, res) => {};
+const sslcommer = new SSLCommerzPayment(
   process.env.STORE_ID,
-  process.env.STORE_PASSWORD
+  process.env.STORE_PASSWORD,
+  false
 );
-console.log(payment);
+router.post("/init", async (req, res) => {
+  console.log("hitting");
+  const { totalAmount, studentInfo, shippingInfo } = req.body;
+  const { studentName, studentEmail, studentId, studentClass, studentPhone } =
+    studentInfo;
 
-exports.SSLCommerz_payment_init = async (req, res) => {
-  const { totalAmount, deliveryMethod, customerInfo, shippingInfo } = req.body;
-
+  const { adress, road, permentAdress } = shippingInfo;
   const transactionId = `transaction_${shortid.generate()}`;
-  // let paymentDone = false;
+  const data = {
+    total_amount: totalAmount,
+    currency: "BDT",
+    tran_id: transactionId, // use unique tran_id for each api call
+    success_url: "http://localhost:5000/success",
+    fail_url: "http://localhost:5000/fail",
+    cancel_url: "http://localhost:5000/cancel",
+    ipn_url: "http://localhost:5000/ipn",
+    shipping_method: "Courier",
+    product_name: "Computer.",
+    product_category: "Electronic",
+    product_profile: "general",
+    std_name: studentName,
+    std_email: studentEmail,
+    std_id: studentId,
+    std_class: studentClass,
+    std_phone: studentPhone,
+    cus_add1: "Dhaka",
+    cus_city: "Dhaka",
+    cus_state: "Dhaka",
+    cus_postcode: "1000",
+    cus_country: "Bangladesh",
+    cus_phone: "01711111111",
+    ship_name: "Customer Name",
+    ship_add1: "Dhaka",
+    ship_add2: "Dhaka",
+    ship_city: "Dhaka",
+    ship_state: "Dhaka",
+    ship_postcode: 1000,
+    ship_country: "Bangladesh",
+  };
+  //fault false for sandbox
+  sslcommer.init(data).then((apiResponse) => {
+    // Redirect the user to payment gateway
+    let GatewayPageURL = apiResponse.GatewayPageURL;
+    res.redirect(GatewayPageURL);
+    console.log("Redirecting to: ", GatewayPageURL);
+  });
 
   try {
-    // Set the urls
-    //SERVER_URL=http://localhost:5000/
-    payment.setUrls({
-      // success: "yoursite.com/success", // If payment Succeed
-      success: `${process.env.SERVER_URL}/payment/checkout/success?transactionId=${transactionId}`, // If payment Succeed
-      fail: `${process.env.SERVER_URL}/payment/checkout/fail`, // If payment failed
-      cancel: `${process.env.SERVER_URL}/payment/checkout/cancel`, // If user cancel payment
-      ipn: `${process.env.SERVER_URL}/ipn`, // SSLCommerz will send http post request in this link
+    const newOrder = new Order({
+      _id: transactionId,
+
+      totalAmount,
+      deliveryMethod,
+
+      studentInfo,
+      shippingInfo,
+
+      paymentDone,
     });
-    // Set order details
-    payment.setOrderInfo({
-      total_amount: 500, // Number field
-      currency: "BDT", // Must be three character string
-      tran_id: transactionId, // Unique Transaction id
+    const save = await newOrder.save();
+  } catch (e) {}
+});
 
-      multi_card_name: "internetbank", // Do not Use! If you do not customize the gateway list,
-      allowed_bin: "371598,371599,376947,376948,376949", // Do not Use! If you do not control on transaction
-    });
-
-    // Set customer info
-    const { studentName, studentEmail, studentId, studentClass, studentPhone } =
-      customerInfo;
-    payment.setCusInfo({
-      name: studentName,
-      email: studentEmail,
-      studentId: studentId,
-      studentClass: studentClass,
-      studentPhone: studentPhone,
-    });
-
-    // Set shipping info
-    const { adress, road, permentAdress } = shippingInfo;
-    payment.setShippingInfo({
-      method: "deliveryMethod", //Shipping method of the order. Example: YES or NO or Courier
-      adress: adress,
-      road: road,
-      permentAdress: permentAdress,
-    });
-
-    // Set Product Profile
-    payment.setProductInfo({
-      product_category: "School fees",
-      product_profile: "general",
-    });
-
-    // Initiate Payment and Get session key
-    payment.paymentInit().then(async (response) => {
-      console.log(response);
-      res.send(response["GatewayPageURL"]);
-      // paymentDone = response["status"] === "SUCCESS";
-
-      const newOrder = new Order({
-        _id: transactionId,
-
-        totalAmount,
-        deliveryMethod,
-
-        customerInfo,
-        shippingInfo,
-        transactionId,
-        // paymentDone,
-      });
-      const save = await newOrder.save();
-    });
-  } catch (err) {
-    return res.status(400).json({ err });
-  }
-};
-
-exports.SSLCommerz_payment_success = async (req, res) => {
-  const { transactionId } = req.query;
-
-  if (!transactionId) {
-    return res.json({ message: "transactionId must be required" });
-  } else {
-    const currentOrder = Order.findByIdAndUpdate(transactionId, {
-      paymentDone: true,
-      updatedAt: Date.now(),
-    });
-
-    currentOrder.exec((err, result) => {
-      if (err) console.log(err);
-      res.redirect(
-        `${process.env.CLIENT_URL}/checkout/success/${transactionId}`
-      );
-    });
-  }
-};
-
-exports.SSLCommerz_payment_fail = (req, res) => {
-  res.redirect(`${process.env.CLIENT_URL}/checkout/fail`);
-};
-
-exports.SSLCommerz_payment_cancel = (req, res) => {
-  res.redirect(`${process.env.CLIENT_URL}/checkout/cancel`);
-};
-
-// -------------------------------- After Success
-
-// console.log(response['sessionkey']);
-//     D37CD2C0A0D322991531D217E194F981
-
-// console.log(response['GatewayPageURL']);
-//     https://sandbox.sslcommerz.com/EasyCheckOut/testcded37cd2c0a0d322991531d217e194f981
-
-// -------------------------------- After Failure (Wrong Store ID)
-
-// console.log(response['status']);
-//     FAILED
-
-// console.log(response['failedreason']);
-//     Store Credential Error Or Store is De-active
+module.exports = router;
