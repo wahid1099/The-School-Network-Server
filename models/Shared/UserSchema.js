@@ -79,7 +79,7 @@ const UserSchema = mongoose.Schema({
     },
     img: {
         type: mongoose.Mixed,
-        required: true,
+        required: false,
     },
     teacheraddress:  {
         type: String,
@@ -88,11 +88,11 @@ const UserSchema = mongoose.Schema({
     teacherphone: { type: String },
     personalStatement: {
         type: String,
-        required: true,
+        required: false,
     },
     education: {
         type: String,
-        require: true,
+        require: false,
     },
 })
 
