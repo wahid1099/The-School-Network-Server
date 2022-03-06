@@ -7,9 +7,12 @@ const ResultSchema = require("../../models/Shared/ResultSchema");
 const ResultCollection = new mongoose.model("ResultCollection", ResultSchema);
 const UserSchema = require("../../models/Shared/UserSchema");
 const UserCollection = new mongoose.model("UserCollection", UserSchema);
-
-const userSchema = require("../../models/Shared/UserSchema");
-const userCollection = new mongoose.model("usercollection", userSchema);
+const NoticeSchema = require("../../models/Teacher/NoticeSchema");
+const StudentNoticeCollection = new mongoose.model(
+  "studentnoticecollection",
+  NoticeSchema
+);
+const MonthlyPayment = require("../../models/Principal/PaymentUplaodSchema");
 
 //Student notes Submit
 router.post("/notesSubmit", async (req, res) => {
@@ -123,5 +126,24 @@ router.put("/updateStudentPP", async (req, res) => {
   );
   res.send(update);
 });
-
+// fetch the notice data
+router.get("/GetStudentNotice", async (req, res) => {
+  const studentclass = req.query.studentclass;
+  try {
+    const results = await StudentNoticeCollection.find({ class: studentclass });
+    res.status(200).json(results);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+// fetch the montly payment data
+router.get("/getMontlyPayment", async (req, res) => {
+  const email = req.query.email;
+  try {
+    const results = await MonthlyPayment.find({ email: email });
+    res.status(200).json(results);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 module.exports = router;
