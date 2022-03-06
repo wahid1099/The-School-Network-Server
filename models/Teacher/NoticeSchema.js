@@ -14,9 +14,12 @@ const NoticeSchema = mongoose.Schema({
         required: true,
     },
     date: {
-        type: Date,
-        default: Date.now,
+        type: String,
     },
+    teacherName:{
+        type: String,
+    }
+    
 });
 
 module.exports = NoticeSchema;

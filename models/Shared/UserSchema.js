@@ -81,7 +81,19 @@ const UserSchema = mongoose.Schema({
     type: mongoose.Mixed,
     required: true,
   },
-  teacherphone: String,
+  teacheraddress: {
+    type: String,
+    required: false,
+  },
+  teacherphone: { type: String },
+  personalStatement: {
+    type: String,
+    required: true,
+  },
+  education: {
+    type: String,
+    require: true,
+  },
 });
 
 module.exports = UserSchema;

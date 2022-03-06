@@ -13,7 +13,11 @@ const NoticeSchema = mongoose.Schema({
         type: mongoose.Mixed
     },
     date:{
-        type : Date, default: Date.now 
+        type : String,
+    },
+    noticeFrom:{
+        type: String,
+        required: false
     }
 })
  
