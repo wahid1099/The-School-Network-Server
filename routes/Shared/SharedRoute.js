@@ -5,6 +5,7 @@ const UserCollection = new mongoose.model("UserCollection", userSchema)
 const ResultSchema = require("../../models/Shared/ResultSchema");
 const ResultCollection = new mongoose.model("ResultCollection", ResultSchema)
 const ObjectId = require('mongodb').ObjectId;
+const multer  = require('multer')
 
 //Adding user to database
 router.post("/addUser", async (req, res) => {
