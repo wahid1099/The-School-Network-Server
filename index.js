@@ -11,10 +11,16 @@ const principal = require("./routes/Principal/PrincipalRoute");
 const student = require("./routes/Student/student");
 const Shared = require("./routes/Shared/SharedRoute");
 const teacher = require("./routes/Teacher/TeacherRoute");
-const sslCommerzRoutes = require("./routes/SSLZcommeze/PaymentControlller");
+const paymentRoute = require("./routes/PaymentRoute/PaymentRoute");
 
 // ---Database connection
 connectDB();
+
+// const corsOptions ={
+//   origin:'*', 
+//   credentials:true,            //access-control-allow-credentials:true
+//   optionSuccessStatus:200,
+// }
 
 //middleware
 app.use(cors());
@@ -38,7 +44,7 @@ app.use("/", teacher);
 // -----------Student Roudets End---------//
 /////////////////////////payment route
 // Routes
-app.use("/", sslCommerzRoutes);
+app.use("/", paymentRoute);
 
 /////////////////////////
 app.get("/", (res, req) => {
