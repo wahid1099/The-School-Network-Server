@@ -10,13 +10,23 @@ const StudentNoticeCollection = new mongoose.model(
 );
 const userSchema = require("../../models/Shared/UserSchema");
 const userCollection = new mongoose.model("usercollection", userSchema);
-const ObjectId = require('mongodb').ObjectId; 
+const ObjectId = require("mongodb").ObjectId;
+const classRoutineSchema = require("../../models/Teacher/ClassRoutineSchema");
+const classRoutineCollection = new mongoose.model(
+    "classRoutineCollection",
+    classRoutineSchema
+);
+const examRoutineSchema = require("../../models/Teacher/ExamRoutineSchema");
+const examRoutineCollection = new mongoose.model(
+    "examRoutineCollection",
+    examRoutineSchema
+);
 
 //geting all student extra care
 router.get("/requestCare", async (req, res) => {
     const teacherclass = req.query.teacherclass;
 
-    const requests = await RequestCare.find({class: teacherclass}); //here RequestCare is the schema name
+    const requests = await RequestCare.find({ class: teacherclass }); //here RequestCare is the schema name
     res.status(200).json(requests);
 });
 router.post("/PublishResult", async (req, res) => {
@@ -32,7 +42,7 @@ router.post("/PublishResult", async (req, res) => {
 // Publish notice from teachers for students
 router.post("/PublishNotice", async (req, res) => {
     const notice = new StudentNoticeCollection(req.body);
-    
+
     try {
         await notice.save();
         res.send({ success: "success" });
@@ -83,11 +93,57 @@ router.put("/AddTeacherInfo", async (req, res) => {
     res.send(update);
 });
 
-// Add teacher info
+// Get Extra Care Request
 router.get("/GetIndividualCare/:id", async (req, res) => {
     const id = req.params.id;
-    console.log('ids', id)
-    const care = await RequestCare.findOne({_id: Object(id)})
+    console.log("ids", id);
+    const care = await RequestCare.findOne({ _id: Object(id) });
     res.send(care);
 });
+
+// Upload Class Routine
+router.post("/UploadClassRoutine", async (req, res) => {
+    const front = req.files.routineImg.data;
+    const studentClass = req.query.class;
+    const section = req.query.section;
+
+    const encodedpic1 = front.toString("base64");
+    const routineImg = Buffer.from(encodedpic1, "base64");
+
+    const data = { routineImg, class: studentClass, section };
+
+    const routine = new examRoutineCollection(data);
+    try {
+        await routine.save();
+        res.send({ success: "success" });
+    } catch (er) {
+        console.log(er);
+    }
+});
+
+// Upload Exam Routine
+router.post("/UploadExamRoutine", async (req, res) => {
+    const front = req.files.routineImg.data;
+    const studentClass = req.query.class;
+    const term = req.query.term;
+
+    const encodedpic1 = front.toString("base64");
+    const routineImg = Buffer.from(encodedpic1, "base64");
+
+    const data = { routineImg, class: studentClass, term };
+
+    const routine = new examRoutineCollection(data);
+    try {
+        await routine.save();
+        res.send({ success: "success" });
+    } catch (er) {
+        console.log(er);
+    }
+});
+
+// Get All Class Routine
+router.get("/GetClassRoutine", async (req, res) => {
+    res.send(await classRoutineCollection.find({}));
+});
+
 module.exports = router;
