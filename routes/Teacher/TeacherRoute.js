@@ -112,7 +112,7 @@ router.post("/UploadClassRoutine", async (req, res) => {
 
     const data = { routineImg, class: studentClass, section };
 
-    const routine = new examRoutineCollection(data);
+    const routine = new classRoutineCollection(data);
     try {
         await routine.save();
         res.send({ success: "success" });
@@ -144,6 +144,31 @@ router.post("/UploadExamRoutine", async (req, res) => {
 // Get All Class Routine
 router.get("/GetClassRoutine", async (req, res) => {
     res.send(await classRoutineCollection.find({}));
+});
+
+// Get All Exam Routine
+router.get("/GetExamRoutine", async (req, res) => {
+    res.send(await examRoutineCollection.find({}));
+});
+
+// Delete A Class Routine
+router.delete("/DeleteClassRoutine", async (req, res) => {
+    try {
+        await classRoutineCollection.deleteOne({ _id: ObjectId(req.query.id) });
+        res.send({ success: "success" });
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+// Delete A Exam Routine
+router.delete("/DeleteExamRoutine", async (req, res) => {
+    try {
+        await examRoutineCollection.deleteOne({ _id: ObjectId(req.query.id) });
+        res.send({ success: "success" });
+    } catch (error) {
+        console.log(error);
+    }
 });
 
 module.exports = router;
