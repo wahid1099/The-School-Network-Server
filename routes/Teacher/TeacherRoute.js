@@ -90,4 +90,13 @@ router.get("/GetIndividualCare/:id", async (req, res) => {
     const care = await RequestCare.findOne({_id: Object(id)})
     res.send(care);
 });
+
+// Add teacher info
+router.get("/ChangeRequestHandler", async (req, res) => {
+    const query = {_id: Object(req.query.id)};
+    const status = req.query.status;
+    await RequestCare.findOneAndUpdate(query, {$set: {status: status,}}, {upsert: true})
+    res.send({status: status});
+});
+
 module.exports = router;
