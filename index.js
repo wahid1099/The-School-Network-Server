@@ -20,7 +20,7 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
 
 // -----------Shared Roudets start---------//
 app.use("/", Shared);
