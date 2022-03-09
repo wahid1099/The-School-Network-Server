@@ -8,6 +8,8 @@ const MonthlyPayment = require('../../models/Principal/PaymentUplaodSchema')
 const userSchema = require('../../models/Shared/UserSchema')
 const UserCollection = new mongoose.model("UserCollection", userSchema)
 const ObjectId = require('mongodb').ObjectId; 
+const AddmissionFormCollection = require("../../models/PaymentModel/PaymentModel");
+
 
 //Publishing Text Notice
 router.post("/publisNotice", async (req, res) => {
@@ -23,7 +25,6 @@ router.post("/publisNotice", async (req, res) => {
 //Publishing Image Notice
 router.post("/PublishImageNotice", async (req, res) => {
     const front = req.files.noticeImage.data;
-    console.log("front one", front);
 
     const encodedpic1 = front.toString("base64");
     const img = Buffer.from(encodedpic1, "base64");
@@ -125,4 +126,24 @@ router.get("/GetAllTeachers", async (req, res) => {
     const teacher = await UserCollection.find({role: 'Teacher'})
     res.send(teacher)
 });
+//Principal geting individual monthly payment details of students
+router.get("/GetlPaymentDetails", async (req, res) => {
+    const email = req.query.email;
+    const query = {email: email}
+    const details = await MonthlyPayment.find(query)
+    res.send(details)
+});
+//Principal geting all Admission Forms
+router.get("/GetAdmissionForms", async (req, res) => {
+    const allforms = await AddmissionFormCollection.find({});
+    res.send(allforms)
+});
+//Principal geting all Admission Forms
+router.get("/IndividualAdmissionForm/:id", async (req, res) => {
+    // console.log('hitted form route', req.params.id)
+
+    const admissionForm = await AddmissionFormCollection.findOne({_id: ObjectId(req.params.id)});
+    res.send(admissionForm)
+});
+
 module.exports = router;
