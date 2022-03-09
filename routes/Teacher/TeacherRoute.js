@@ -19,7 +19,7 @@ router.get("/requestCare", async (req, res) => {
     const requests = await RequestCare.find({class: teacherclass}); //here RequestCare is the schema name
     res.status(200).json(requests);
 });
-router.post("/PublishResult", async (req, res) => {
+router.post("/publishResult", async (req, res) => {
     const result = new ResultCollection(req.body);
     try {
         await result.save();
