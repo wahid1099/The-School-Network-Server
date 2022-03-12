@@ -69,7 +69,7 @@ app.use("/", paymentRoute);
 app.use("/", pdfuploads);
 // -----------PdfUpload Roudets End---------//
 
-app.get("/", (res, req) => {
+app.get("/", ( req,res) => {
   res.send("School Network Server is Connected");
 });
 app.listen(port, (req, res) => {
