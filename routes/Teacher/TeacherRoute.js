@@ -115,4 +115,13 @@ router.post("/AddBook", async (req, res) => {
 
     res.send({success: 'success'});
 });
+
+// Add teacher info
+router.get("/GetAllBooks", async (req, res) => {
+    console.log('hitted')
+    const books = await BookCollection.find()
+  
+    res.send(books);
+});
+
 module.exports = router;
