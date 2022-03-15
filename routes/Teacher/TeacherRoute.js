@@ -2,16 +2,23 @@ const router = require("express").Router();
 const mongoose = require("mongoose");
 const RequestCare = require("../../models/Student/requestCare");
 const ResultSchema = require("../../models/Shared/ResultSchema");
+const AssingmentSchema =require("../../models/Teacher/AssignmentSchema")
+
 const ResultCollection = new mongoose.model("ResultCollection", ResultSchema);
 const NoticeSchema = require("../../models/Teacher/NoticeSchema");
 const StudentNoticeCollection = new mongoose.model(
     "studentnoticecollection",
     NoticeSchema
 );
+const StudentAssignmentCollection = new mongoose.model(
+    "studentAssignmentCollection",
+    AssingmentSchema
+);
 const userSchema = require("../../models/Shared/UserSchema");
 const userCollection = new mongoose.model("usercollection", userSchema);
 const BookCollection = require("../../models/Teacher/AddBook");
 const ObjectId = require('mongodb').ObjectId; 
+
 
 //geting all student extra care
 router.get("/requestCare", async (req, res) => {
@@ -20,10 +27,37 @@ router.get("/requestCare", async (req, res) => {
     const requests = await RequestCare.find({class: teacherclass}); //here RequestCare is the schema name
     res.status(200).json(requests);
 });
-router.post("/PublishResult", async (req, res) => {
+router.post("/publishResult", async (req, res) => {
     const result = new ResultCollection(req.body);
     try {
         await result.save();
+        res.send({ success: "success" });
+    } catch (er) {
+        console.log(er);
+    }
+});
+  // Publish assignment from teachers for students
+router.post("/assignmentPublish", async (req, res) => {
+    console.log("hit")
+    const assing = new StudentAssignmentCollection(req.body);
+    
+    try {
+        await assing.save();
+        res.send( "success" );
+    } catch (er) {
+        console.log(er);
+    }
+});
+//Publishing Image Notice
+router.post("/PublishImageAssing", async (req, res) => {
+    const front = req.files.noticeImage.data;
+
+    const encodedpic1 = front.toString("base64");
+    const img = Buffer.from(encodedpic1, "base64");
+    const notice = new StudentAssignmentCollection({ img: img });
+
+    try {
+        await notice.save();
         res.send({ success: "success" });
     } catch (er) {
         console.log(er);
