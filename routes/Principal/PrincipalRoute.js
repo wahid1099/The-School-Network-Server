@@ -120,7 +120,7 @@ router.post("/UploadMonthlyPayment", async (req, res) => {
     const notice = await MonthlyPayment.insertMany(req.body)
     res.send({post: 'successfully'})
 });
-//Principal posting monthly payment
+//Principal geting all teacher info
 router.get("/GetAllTeachers", async (req, res) => {
  
     const teacher = await UserCollection.find({role: 'Teacher'})
@@ -144,6 +144,15 @@ router.get("/IndividualAdmissionForm/:id", async (req, res) => {
 
     const admissionForm = await AddmissionFormCollection.findOne({_id: ObjectId(req.params.id)});
     res.send(admissionForm)
+});
+
+//Principal geting all teacher info
+router.delete("/RemoveTeacher/:id", async (req, res) => {
+    const id = req.params.id;
+    console.log(id)
+    const query = {_id: ObjectId(id)}
+    const teacher = await UserCollection.deleteOne(query)
+    res.send({success: 'Deleted'}) 
 });
 
 module.exports = router;

@@ -10,6 +10,7 @@ const StudentNoticeCollection = new mongoose.model(
 );
 const userSchema = require("../../models/Shared/UserSchema");
 const userCollection = new mongoose.model("usercollection", userSchema);
+const BookCollection = require("../../models/Teacher/AddBook");
 const ObjectId = require('mongodb').ObjectId; 
 
 //geting all student extra care
@@ -97,6 +98,30 @@ router.get("/ChangeRequestHandler", async (req, res) => {
     const status = req.query.status;
     await RequestCare.findOneAndUpdate(query, {$set: {status: status,}}, {upsert: true})
     res.send({status: status});
+});
+
+//Teacher Adding Book Library to book
+router.post("/AddBook", async (req, res) => {
+    const data = req.body;
+    const imgdata = req.files.bookImg.data;
+
+    const encodedpic1 = imgdata.toString("base64");
+    const bookImg = Buffer.from(encodedpic1, "base64");
+    const book = {...data, bookImg}
+
+    const addBook = new BookCollection(book);
+    
+    await addBook.save();
+
+    res.send({success: 'success'});
+});
+
+// Add teacher info
+router.get("/GetAllBooks", async (req, res) => {
+    console.log('hitted')
+    const books = await BookCollection.find()
+  
+    res.send(books);
 });
 
 module.exports = router;
