@@ -9,6 +9,7 @@ router.post("/pdfUpload", async (req, res) => {
   let { StudentName, StudentId, StudentEmail, PdfPath } = req.body;
   //Use the name of the input field (i.e. "avatar") to retrieve the uploaded file
   let pdf = req.files.pdf;
+  console.log("pdf", pdf);
 
   //Use the mv() method to place the file in upload directory (i.e. "uploads")
   pdf.mv("./uploads/" + pdf.name);
@@ -44,10 +45,11 @@ router.get("/GetAllPdfs", async (req, res) => {
 });
 
 // fetch the Pdf  data of a student
-router.get("/studentPdfID", async (req, res) => {
-  const StudentId = req.query.StudentId;
-  console.log(StudentId);
-  const response = await PdfModel.findOne({ StudentId: StudentId });
+router.get("/studentPdf", async (req, res) => {
+  // console.log(req);
+  const StudentEmail = req.query.email;
+  console.log(StudentEmail);
+  const response = await PdfModel.find({ StudentEmail: StudentEmail });
   console.log(response);
   res.send(response);
 });
