@@ -2,6 +2,8 @@ const router = require("express").Router();
 const mongoose = require("mongoose");
 const Student = require("../../models/Student/studentModels");
 const RequestCare = require("../../models/Student/requestCare");
+const concessionFormSchema = require("../../models/Student/concessionForm");
+
 const { db } = require("../../models/Student/studentModels");
 const ResultSchema = require("../../models/Shared/ResultSchema");
 const ResultCollection = new mongoose.model("ResultCollection", ResultSchema);
@@ -146,4 +148,17 @@ router.get("/getMontlyPayment", async (req, res) => {
     res.status(500).json(err);
   }
 });
+
+//   student Concession  Form
+router.post("/concessionForm", async (req, res) => {
+  const User = new concessionFormSchema(req.body);
+  console.log("user", User);
+  try {
+    await User.save();
+    res.send({ useradded: "addeduser" });
+  } catch (er) {
+    console.log(er);
+  }
+});
+
 module.exports = router;
