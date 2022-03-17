@@ -83,8 +83,9 @@ router.get("/filteredStudent", async (req, res) => {
     });
     // console.log(result);
     res.set('Access-Control-Allow-Origin', '*');
-    res.status(200).json(result);
+    res.send(result);
   } catch (err) {
+    res.set('Access-Control-Allow-Origin', '*');
     res.status(500).json(err);
   }
 });
