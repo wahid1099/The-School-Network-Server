@@ -19,8 +19,10 @@ router.post("/notesSubmit", async (req, res) => {
   const newPost = new Student(req.body);
   try {
     const savedPost = await newPost.save();
+    res.set('Access-Control-Allow-Origin', '*');
     res.status(200).json(savedPost);
   } catch (err) {
+    res.set('Access-Control-Allow-Origin', '*');
     res.status(500).json(err);
   }
 });
@@ -32,8 +34,10 @@ router.post("/requestCare", async (req, res) => {
   const newRequest = new RequestCare(req.body);
   try {
     const savedRequest = await newRequest.save();
+    res.set('Access-Control-Allow-Origin', '*');
     res.status(200).json(savedRequest);
   } catch (err) {
+    res.set('Access-Control-Allow-Origin', '*');
     res.status(500).json(err);
   }
 });
@@ -44,6 +48,7 @@ router.get("/requestCare", async (req, res) => {
   try {
     // no need for database name, only the schema name is enough to fetch data
     const requests = await RequestCare.find(); //here RequestCare is the schema name
+    res.set('Access-Control-Allow-Origin', '*');
     res.status(200).json(requests);
   } catch (err) {
     res.status(500).json(err);
@@ -54,6 +59,7 @@ router.get("/requestCare", async (req, res) => {
 router.get("/results", async (req, res) => {
   try {
     const results = await ResultCollection.find({});
+    res.set('Access-Control-Allow-Origin', '*');
     res.status(200).json(results);
   } catch (err) {
     res.status(500).json(err);
@@ -76,8 +82,10 @@ router.get("/filteredStudent", async (req, res) => {
       name: filteredResult.name,
     });
     // console.log(result);
-    res.status(200).json(result);
+    res.set('Access-Control-Allow-Origin', '*');
+    res.send(result);
   } catch (err) {
+    res.set('Access-Control-Allow-Origin', '*');
     res.status(500).json(err);
   }
 });
@@ -96,6 +104,7 @@ router.get("/filteredResult", async (req, res) => {
       class: student.class,
     });
     // console.log({ filteredResult, student });
+    res.set('Access-Control-Allow-Origin', '*');
     res.status(200).json(filteredResult);
   } catch (err) {
     res.status(500).json(err);
@@ -106,6 +115,7 @@ router.get("/filteredResult", async (req, res) => {
 router.get("/studentProfile", async (req, res) => {
   const studentEmail = req.query.email;
   const response = await UserCollection.findOne({ email: studentEmail });
+  res.set('Access-Control-Allow-Origin', '*');
   res.send(response);
 });
 
@@ -124,6 +134,7 @@ router.put("/updateStudentPP", async (req, res) => {
     { $set: { img: img } },
     { upsert: true }
   );
+  res.set('Access-Control-Allow-Origin', '*');
   res.send(update);
 });
 // fetch the notice data
@@ -131,8 +142,10 @@ router.get("/GetStudentNotice", async (req, res) => {
   const studentclass = req.query.studentclass
     try {
     const results = await StudentNoticeCollection.find({class: studentclass});
+    res.set('Access-Control-Allow-Origin', '*');
     res.status(200).json(results);
   } catch (err) {
+    res.set('Access-Control-Allow-Origin', '*');
     res.status(500).json(err);
   }
 });
@@ -141,6 +154,7 @@ router.get("/getMontlyPayment", async (req, res) => {
   const email = req.query.email
     try {
     const results = await MonthlyPayment.find({email: email});
+    res.set('Access-Control-Allow-Origin', '*');
     res.status(200).json(results);
   } catch (err) {
     res.status(500).json(err);
