@@ -155,9 +155,9 @@ router.post("/concessionForm", async (req, res) => {
   console.log("user", User);
   try {
     await User.save();
-    res.send({ useradded: "addeduser" });
-  } catch (er) {
-    console.log(er);
+    res.send({ concessionForm: "concession Form" });
+  } catch (err) {
+    console.log(err);
   }
 });
 
