@@ -10,7 +10,6 @@ const multer  = require('multer')
 //Adding user to database
 router.post("/addUser", async (req, res) => {
     const User = new UserCollection(req.body);
-    console.log('user', User)
     try{
         await User.save()
         res.send({useradded: 'addeduser'})
@@ -24,12 +23,14 @@ router.post("/addUser", async (req, res) => {
 router.get("/checkUser", async (req, res) => {
     const email = req.query.email;
     const user = await UserCollection.findOne({email: email});
-    console.log('email', email)
     if(user.role)  
     {
+        res.set('Access-Control-Allow-Origin', '*');
         res.send({userrole: user.role})
+        
     }
     else{
+        res.set('Access-Control-Allow-Origin', '*');
         res.send({none: 'norole'})
     }
 });
