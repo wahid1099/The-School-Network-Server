@@ -43,7 +43,7 @@ router.get("/GetAllStudents", async (req, res) => {
     res.send(students)
 });
 
-//geting  student individual performance
+//principal geting  student individual performance
 router.get("/IndividualPerformance/:id", async (req, res) => {
     const id = req.params.id;
     const studentInfo = await UserCollection.findOne({_id: ObjectId(id)})
@@ -58,4 +58,4 @@ router.get("/IndividualPerformance/:id", async (req, res) => {
     }
 });
 
-module.exports = router;
+module.exports = router; 
