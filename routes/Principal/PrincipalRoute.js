@@ -10,11 +10,9 @@ const UserCollection = new mongoose.model("UserCollection", userSchema)
 const ObjectId = require('mongodb').ObjectId; 
 const AddmissionFormCollection = require("../../models/PaymentModel/PaymentModel");
 
-
 //Publishing Text Notice
 router.post("/publisNotice", async (req, res) => {
     const notice = new TeacherNotice(req.body);
-
     try{
         await notice.save();
         res.send({ success: "success" });
@@ -41,6 +39,7 @@ router.post("/PublishImageNotice", async (req, res) => {
 //Principal Geting Previous Notice
 router.get("/PreviousNotice", async (req, res) => {
     const notice = await TeacherNotice.find({});
+    res.set('Access-Control-Allow-Origin', '*');
     res.send(notice);
 });
 //Principal DELETING Previous Notice
@@ -93,6 +92,7 @@ router.post("/PublishImageAnnouncement", async (req, res) => {
 //Principal Geting Previous Announcement
 router.get("/PreviousAnnouncement", async (req, res) => {
     const Announcement = await UserAnnouncement.find({});
+    res.set('Access-Control-Allow-Origin', '*');
     res.send(Announcement);
 });
 //Principal DELETING Previous Announcement
