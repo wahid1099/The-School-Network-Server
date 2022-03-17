@@ -150,12 +150,33 @@ router.post("/AddBook", async (req, res) => {
     res.send({success: 'success'});
 });
 
-// Add teacher info
+// get all library books
 router.get("/GetAllBooks", async (req, res) => {
-    console.log('hitted')
     const books = await BookCollection.find()
   
     res.send(books);
+});
+
+// get Edit books
+router.get("/GetEditBook/:id", async (req, res) => {
+    const book = await BookCollection.findOne({_id: ObjectId(req.params.id)})
+  
+    res.send(book);
+});
+
+// put Edit books
+router.put("/SubmitEditedBook/:id", async (req, res) => {
+    console.log('hitted', req.params.id)
+    const book = req.body
+    const query = {_id: ObjectId(req.params.id)}
+    const update = await BookCollection.findOneAndUpdate(
+        query,
+        {
+            $set: { bookName:  book.bookName, writerName: book.writerName, availableBook: book.availableBook, category: book.category, description: book.description},
+        },
+        { upsert: true }
+    );
+    res.send({success: 'success'});
 });
 
 module.exports = router;
