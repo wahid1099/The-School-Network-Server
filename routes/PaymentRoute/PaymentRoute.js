@@ -60,7 +60,7 @@ router.post("/addmissionpayment", async (req, res) => {
       const info = { ...productInfo, ...data }
       
       if (info.GatewayPageURL) {
-        res.set('Access-Control-Allow-Origin', '*');
+        
         res.json(info.GatewayPageURL)
        }
       else {
@@ -74,24 +74,24 @@ router.post("/addmissionpayment", async (req, res) => {
   router.post("/successes", async (req, res) => {
       const result = new AddmissionFormCollection(admissiondata)
       await result.save()
-      res.set('Access-Control-Allow-Origin', '*');
+      
      res.status(200).redirect(`https://the-school-network.web.app/AdmissionSuccess`)
      
   }) 
 
   router.post("/failures", async (req, res) => {
-    res.set('Access-Control-Allow-Origin', '*');
+    
       res.status(400).redirect('https://the-school-network.web.app')
 
    })
    router.post("/canceled", async (req, res) => {
-    res.set('Access-Control-Allow-Origin', '*');
+    
       res.status(400).redirect('https://the-school-network.web.app')
 
    })
 
    router.get('/payment/:tran_id', async (req, res) => {
-    res.set('Access-Control-Allow-Origin', '*');
+    
       const id = req.params.tran_id;
       const result = await PaymentCollection.findOne({ tran_id: id })
       res.json(result)
@@ -148,7 +148,7 @@ router.post("/PayMonthlyPayment", async (req, res) => {
         const info = { ...productInfo, ...data }
         
         if (info.GatewayPageURL) {
-            res.set('Access-Control-Allow-Origin', '*');
+            
             res.json(info.GatewayPageURL)
          }
         else {
@@ -164,18 +164,18 @@ router.post("/PayMonthlyPayment", async (req, res) => {
         const notice = await MonthlyPayment.findOneAndUpdate(query, {
             $set: { paymentStatus: 'PAID',tran_id: uuidv4(),
             paymentNumber: datas.paymentNumber, paymentDate: new Date().toLocaleDateString() }},{ upsert: true });
-            res.set('Access-Control-Allow-Origin', '*');
+            
        res.status(200).redirect(`https://the-school-network.web.app/StudentDashboard/StudentPaymentSuccess`)
        
     })    
   
     router.post("/failure", async (req, res) => {
-        res.set('Access-Control-Allow-Origin', '*');
+        
         res.status(400).redirect('https://the-school-network.web.app')
   
      })
      router.post("/cancel", async (req, res) => {
-        res.set('Access-Control-Allow-Origin', '*');
+        
         res.status(400).redirect('https://the-school-network.web.app')
   
      })
@@ -184,7 +184,7 @@ router.post("/PayMonthlyPayment", async (req, res) => {
   
         const id = req.params.tran_id;
         const result = await PaymentCollection.findOne({ tran_id: id })
-        res.set('Access-Control-Allow-Origin', '*');
+        
         res.json(result)
     })
   
