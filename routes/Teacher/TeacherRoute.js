@@ -25,17 +25,17 @@ router.get("/requestCare", async (req, res) => {
     const teacherclass = req.query.teacherclass;
 
     const requests = await RequestCare.find({class: teacherclass}); //here RequestCare is the schema name
-    res.set('Access-Control-Allow-Origin', '*');
+    
     res.status(200).json(requests);
 });
 router.post("/publishResult", async (req, res) => {
     const result = new ResultCollection(req.body);
     try {
         await result.save();
-        res.set('Access-Control-Allow-Origin', '*');
+        
         res.send({ success: "success" });
     } catch (er) {
-        res.set('Access-Control-Allow-Origin', '*');
+        
         console.log(er);
     }
 });
@@ -46,10 +46,10 @@ router.post("/assignmentPublish", async (req, res) => {
     
     try {
         await assing.save();
-        res.set('Access-Control-Allow-Origin', '*');
+        
         res.send( "success" );
     } catch (er) {
-        res.set('Access-Control-Allow-Origin', '*');
+        
         console.log(er);
     }
 });
@@ -63,7 +63,7 @@ router.post("/PublishImageAssing", async (req, res) => {
 
     try {
         await notice.save();
-        res.set('Access-Control-Allow-Origin', '*');
+        
         res.send({ success: "success" });
     } catch (er) {
         console.log(er);
@@ -76,7 +76,7 @@ router.post("/PublishNotice", async (req, res) => {
     
     try {
         await notice.save();
-        res.set('Access-Control-Allow-Origin', '*');
+        
         res.send({ success: "success" });
     } catch (er) {
         console.log(er);
@@ -87,7 +87,7 @@ router.post("/PublishNotice", async (req, res) => {
 router.get("/TeacherProfile", async (req, res) => {
     const teacherEmail = req.query.email;
     const response = await userCollection.findOne({ email: teacherEmail });
-    res.set('Access-Control-Allow-Origin', '*');
+    
     res.send(response);
 });
 
@@ -106,7 +106,7 @@ router.put("/UpdateTeacherDP", async (req, res) => {
         { $set: { img: img } },
         { upsert: true }
     );
-    res.set('Access-Control-Allow-Origin', '*');
+    
     res.send(update);
 });
 
@@ -124,7 +124,7 @@ router.put("/AddTeacherInfo", async (req, res) => {
         },
         { upsert: true }
     );
-    res.set('Access-Control-Allow-Origin', '*');
+    
     res.send(update);
 });
 
@@ -133,7 +133,7 @@ router.get("/GetIndividualCare/:id", async (req, res) => {
     const id = req.params.id;
     console.log('ids', id)
     const care = await RequestCare.findOne({_id: Object(id)})
-    res.set('Access-Control-Allow-Origin', '*');
+    
     res.send(care);
 });
 
@@ -142,7 +142,7 @@ router.get("/ChangeRequestHandler", async (req, res) => {
     const query = {_id: Object(req.query.id)};
     const status = req.query.status;
     await RequestCare.findOneAndUpdate(query, {$set: {status: status,}}, {upsert: true})
-    res.set('Access-Control-Allow-Origin', '*');
+    
     res.send({status: status});
 });
 
@@ -158,21 +158,21 @@ router.post("/AddBook", async (req, res) => {
     const addBook = new BookCollection(book);
     
     await addBook.save();
-    res.set('Access-Control-Allow-Origin', '*');
+    
     res.send({success: 'success'});
 });
 
 // get all library books
 router.get("/GetAllBooks", async (req, res) => {
     const books = await BookCollection.find()
-    res.set('Access-Control-Allow-Origin', '*');
+    
     res.send(books);
 });
 
 // get Edit books
 router.get("/GetEditBook/:id", async (req, res) => {
     const book = await BookCollection.findOne({_id: ObjectId(req.params.id)})
-    res.set('Access-Control-Allow-Origin', '*');
+    
     res.send(book);
 });
 
@@ -188,7 +188,7 @@ router.put("/SubmitEditedBook/:id", async (req, res) => {
         },
         { upsert: true }
     );
-    res.set('Access-Control-Allow-Origin', '*');
+    
     res.send({success: 'success'});
 });
 
