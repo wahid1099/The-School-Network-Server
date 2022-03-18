@@ -14,9 +14,10 @@ const Shared = require("./routes/Shared/SharedRoute");
 const teacher = require("./routes/Teacher/TeacherRoute");
 const paymentRoute = require("./routes/PaymentRoute/PaymentRoute");
 const pdfuploads = require("./routes/PdfUplaodRoute/PdfUploader");
+const corsOptions = require("./config/CorsOption");
 
 //middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(fileUpload());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
