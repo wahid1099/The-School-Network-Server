@@ -23,6 +23,10 @@ app.use(fileUpload());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.urlencoded({ extended: true })); 
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next()
+})
 // ---Database connection
 connectDB();
 
