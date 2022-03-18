@@ -15,20 +15,15 @@ const teacher = require("./routes/Teacher/TeacherRoute");
 const paymentRoute = require("./routes/PaymentRoute/PaymentRoute");
 const pdfuploads = require("./routes/PdfUplaodRoute/PdfUploader");
 
-// ---Database connection
-connectDB();
-
 //middleware
 app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://the-school-network.web.app/"); // update to match the domain you will make the request from
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
 app.use(express.urlencoded({ extended: true }));
+
+// ---Database connection
+connectDB();
 
 // -----------Shared Roudets start---------//
 app.use("/", Shared);
