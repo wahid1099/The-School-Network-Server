@@ -16,9 +16,9 @@ const paymentRoute = require("./routes/PaymentRoute/PaymentRoute");
 const pdfuploads = require("./routes/PdfUplaodRoute/PdfUploader");
 const corsOptions = require("./config/CorsOption");
 
-
+connectDB();
 //middleware
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -30,7 +30,7 @@ app.use((req, res, next) => {
   next()
 })
 // ---Database connection
-connectDB();
+
 
 // -----------Shared Roudets start---------//
 app.use("/", Shared);

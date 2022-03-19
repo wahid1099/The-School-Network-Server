@@ -20,10 +20,10 @@ router.post("/addmissionpayment", async (req, res) => {
       total_amount: req.body.totalAmount,
       currency: 'BDT',
       tran_id: uuidv4(),
-      success_url: 'https://blooming-citadel-14218.herokuapp.com/successes',
-      fail_url: 'https://blooming-citadel-14218.herokuapp.com/failures',
-      cancel_url: 'https://blooming-citadel-14218.herokuapp.com/canceled',
-      ipn_url: 'https://blooming-citadel-14218.herokuapp.com/ipn',
+      success_url: 'http://localhost:5000/successes',
+      fail_url: 'http://localhost:5000/failures',
+      cancel_url: 'http://localhost:5000/canceled',
+      ipn_url: 'http://localhost:5000/ipn',
       paymentStatus: 'success',
       shipping_method: 'Courier',
       product_name:'ahan',
@@ -75,18 +75,18 @@ router.post("/addmissionpayment", async (req, res) => {
       const result = new AddmissionFormCollection(admissiondata)
       await result.save()
       
-     res.status(200).redirect(`https://the-school-network.web.app/AdmissionSuccess`)
+     res.status(200).redirect(`http://localhost:3000/AdmissionSuccess`)
      
   }) 
 
   router.post("/failures", async (req, res) => {
     
-      res.status(400).redirect('https://the-school-network.web.app')
+      res.status(400).redirect('http://localhost:3000')
 
    })
    router.post("/canceled", async (req, res) => {
     
-      res.status(400).redirect('https://the-school-network.web.app')
+      res.status(400).redirect('http://localhost:3000')
 
    })
 
@@ -108,10 +108,10 @@ router.post("/PayMonthlyPayment", async (req, res) => {
         total_amount: '225',
         currency: 'BDT',
         tran_id: uuidv4(),
-        success_url: 'https://blooming-citadel-14218.herokuapp.com/success',
-        fail_url: 'https://blooming-citadel-14218.herokuapp.com/failure',
-        cancel_url: 'https://blooming-citadel-14218.herokuapp.com/cancel',
-        ipn_url: 'https://blooming-citadel-14218.herokuapp.com/ipn',
+        success_url: 'http://localhost:5000/success',
+        fail_url: 'http://localhost:5000/failure',
+        cancel_url: 'http://localhost:5000/cancel',
+        ipn_url: 'http://localhost:5000/ipn',
         paymentStatus: 'success',
         shipping_method: 'Courier',
         product_name:'ahan',
@@ -165,18 +165,18 @@ router.post("/PayMonthlyPayment", async (req, res) => {
             $set: { paymentStatus: 'PAID',tran_id: uuidv4(),
             paymentNumber: datas.paymentNumber, paymentDate: new Date().toLocaleDateString() }},{ upsert: true });
             
-       res.status(200).redirect(`https://the-school-network.web.app/StudentDashboard/StudentPaymentSuccess`)
+       res.status(200).redirect(`http://localhost:3000/StudentDashboard/StudentPaymentSuccess`)
        
     })    
   
     router.post("/failure", async (req, res) => {
         
-        res.status(400).redirect('https://the-school-network.web.app')
+        res.status(400).redirect('http://localhost:3000')
   
      })
      router.post("/cancel", async (req, res) => {
         
-        res.status(400).redirect('https://the-school-network.web.app')
+        res.status(400).redirect('http://localhost:3000')
   
      })
   
