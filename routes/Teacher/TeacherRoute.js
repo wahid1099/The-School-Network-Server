@@ -25,14 +25,17 @@ router.get("/requestCare", async (req, res) => {
     const teacherclass = req.query.teacherclass;
 
     const requests = await RequestCare.find({class: teacherclass}); //here RequestCare is the schema name
+    
     res.status(200).json(requests);
 });
 router.post("/publishResult", async (req, res) => {
     const result = new ResultCollection(req.body);
     try {
         await result.save();
+        
         res.send({ success: "success" });
     } catch (er) {
+        
         console.log(er);
     }
 });
@@ -43,8 +46,10 @@ router.post("/assignmentPublish", async (req, res) => {
     
     try {
         await assing.save();
+        
         res.send( "success" );
     } catch (er) {
+        
         console.log(er);
     }
 });
@@ -58,6 +63,7 @@ router.post("/PublishImageAssing", async (req, res) => {
 
     try {
         await notice.save();
+        
         res.send({ success: "success" });
     } catch (er) {
         console.log(er);
@@ -70,6 +76,7 @@ router.post("/PublishNotice", async (req, res) => {
     
     try {
         await notice.save();
+        
         res.send({ success: "success" });
     } catch (er) {
         console.log(er);
@@ -80,6 +87,7 @@ router.post("/PublishNotice", async (req, res) => {
 router.get("/TeacherProfile", async (req, res) => {
     const teacherEmail = req.query.email;
     const response = await userCollection.findOne({ email: teacherEmail });
+    
     res.send(response);
 });
 
@@ -98,6 +106,7 @@ router.put("/UpdateTeacherDP", async (req, res) => {
         { $set: { img: img } },
         { upsert: true }
     );
+    
     res.send(update);
 });
 
@@ -115,6 +124,7 @@ router.put("/AddTeacherInfo", async (req, res) => {
         },
         { upsert: true }
     );
+    
     res.send(update);
 });
 
@@ -123,6 +133,7 @@ router.get("/GetIndividualCare/:id", async (req, res) => {
     const id = req.params.id;
     console.log('ids', id)
     const care = await RequestCare.findOne({_id: Object(id)})
+    
     res.send(care);
 });
 
@@ -131,6 +142,7 @@ router.get("/ChangeRequestHandler", async (req, res) => {
     const query = {_id: Object(req.query.id)};
     const status = req.query.status;
     await RequestCare.findOneAndUpdate(query, {$set: {status: status,}}, {upsert: true})
+    
     res.send({status: status});
 });
 
@@ -146,16 +158,38 @@ router.post("/AddBook", async (req, res) => {
     const addBook = new BookCollection(book);
     
     await addBook.save();
-
+    
     res.send({success: 'success'});
 });
 
-// Add teacher info
+// get all library books
 router.get("/GetAllBooks", async (req, res) => {
-    console.log('hitted')
     const books = await BookCollection.find()
-  
+    
     res.send(books);
+});
+
+// get Edit books
+router.get("/GetEditBook/:id", async (req, res) => {
+    const book = await BookCollection.findOne({_id: ObjectId(req.params.id)})
+    
+    res.send(book);
+});
+
+// put Edit books
+router.put("/SubmitEditedBook/:id", async (req, res) => {
+    console.log('hitted', req.params.id)
+    const book = req.body
+    const query = {_id: ObjectId(req.params.id)}
+    const update = await BookCollection.findOneAndUpdate(
+        query,
+        {
+            $set: { bookName:  book.bookName, writerName: book.writerName, availableBook: book.availableBook, category: book.category, description: book.description},
+        },
+        { upsert: true }
+    );
+    
+    res.send({success: 'success'});
 });
 
 module.exports = router;

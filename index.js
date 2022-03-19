@@ -14,44 +14,21 @@ const Shared = require("./routes/Shared/SharedRoute");
 const teacher = require("./routes/Teacher/TeacherRoute");
 const paymentRoute = require("./routes/PaymentRoute/PaymentRoute");
 const pdfuploads = require("./routes/PdfUplaodRoute/PdfUploader");
+const corsOptions = require("./config/CorsOption");
 
-// ---Database connection
-connectDB();
-
-// Add headers before the routes are defined
-app.use(function (req, res, next) {
-  // Website you wish to allow to connect
-  res.setHeader(
-    "Access-Control-Allow-Origin",
-    "https://the-school-network.web.app/"
-  );
-
-  // Request methods you wish to allow
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-
-  // Request headers you wish to allow
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type"
-  );
-
-  // Set to true if you need the website to include cookies in the requests sent
-  // to the API (e.g. in case you use sessions)
-  res.setHeader("Access-Control-Allow-Credentials", true);
-
-  // Pass to next layer of middleware
-  next();
-});
 //middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(fileUpload());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(express.urlencoded({ extended: true }));
 
-// app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
+// ---Database connection
+connectDB();
 
 // -----------Shared Roudets start---------//
 app.use("/", Shared);
