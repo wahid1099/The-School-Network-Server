@@ -24,7 +24,7 @@ router.post("/addUser", async (req, res) => {
 router.get("/checkUser", async (req, res) => {
     const email = req.query.email;
     const user = await UserCollection.findOne({email: email});
-    if(user.role)  
+    if(user?.role)  
     {
         
         res.send({userrole: user.role})
@@ -32,7 +32,7 @@ router.get("/checkUser", async (req, res) => {
     }
     else{
         
-        res.send({none: 'norole'})
+        res.send({userrole: 'norole'})
     }
 });
 //geting all students for manage
