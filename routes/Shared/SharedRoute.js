@@ -12,7 +12,7 @@ router.post("/addUser", async (req, res) => {
     const User = new UserCollection(req.body);
     try{
         await User.save()
-        res.set('Access-Control-Allow-Origin', '*');
+        
         res.send({useradded: 'addeduser'})
     }
     catch(er){
@@ -24,22 +24,22 @@ router.post("/addUser", async (req, res) => {
 router.get("/checkUser", async (req, res) => {
     const email = req.query.email;
     const user = await UserCollection.findOne({email: email});
-    if(user.role)  
+    if(user?.role)  
     {
-        res.set('Access-Control-Allow-Origin', '*');
+        
         res.send({userrole: user.role})
         
     }
     else{
-        res.set('Access-Control-Allow-Origin', '*');
-        res.send({none: 'norole'})
+        
+        res.send({userrole: 'norole'})
     }
 });
 //geting all students for manage
 router.get("/GetAllStudents", async (req, res) => {
     const studentclass = req.query.studentclass;
     const students = await UserCollection.find({class: studentclass})
-    res.set('Access-Control-Allow-Origin', '*');
+    
     res.send(students)
 });
 
@@ -49,11 +49,11 @@ router.get("/IndividualPerformance/:id", async (req, res) => {
     const studentInfo = await UserCollection.findOne({_id: ObjectId(id)})
     if(studentInfo.roll){
         const result = await ResultCollection.find({class: studentInfo.class, name: studentInfo.name, roll: studentInfo.roll})
-        res.set('Access-Control-Allow-Origin', '*');
+        
         res.send(result)
     }
     else{
-        res.set('Access-Control-Allow-Origin', '*');
+        
         res.send({error: 'result not found'})
     }
 });
