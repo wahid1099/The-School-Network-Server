@@ -160,10 +160,10 @@ router.get("/getMontlyPayment", async (req, res) => {
 
 //   student Concession  Form
 router.post("/concessionForm", async (req, res) => {
-  const User = new concessionFormSchema(req.body);
-  console.log("user", User);
+  const FormData = new concessionFormSchema(req.body);
+  console.log("FormData", FormData);
   try {
-    await User.save();
+    await FormData.save();
     res.send({ concessionForm: "concession Form" });
   } catch (err) {
     console.log(err);
