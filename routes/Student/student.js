@@ -1,8 +1,8 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
-const Student = require("../../models/Student/studentModels");
+
 const RequestCare = require("../../models/Student/requestCare");
-const { db } = require("../../models/Student/studentModels");
+
 const ResultSchema = require("../../models/Shared/ResultSchema");
 const ResultCollection = new mongoose.model("ResultCollection", ResultSchema);
 const UserSchema = require("../../models/Shared/UserSchema");
@@ -14,18 +14,6 @@ const StudentNoticeCollection = new mongoose.model(
 );
 const MonthlyPayment = require("../../models/Principal/PaymentUplaodSchema");
 const concessionFormSchema = require("../../models/Student/concessionForm");
-
-//Student notes Submit
-router.post("/notesSubmit", async (req, res) => {
-  const newPost = new Student(req.body);
-  try {
-    const savedPost = await newPost.save();
-
-    res.status(200).json(savedPost);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
 
 //student request care
 
