@@ -14,6 +14,7 @@ const Shared = require("./routes/Shared/SharedRoute");
 const teacher = require("./routes/Teacher/TeacherRoute");
 const paymentRoute = require("./routes/PaymentRoute/PaymentRoute");
 const pdfuploads = require("./routes/PdfUplaodRoute/PdfUploader");
+const videoUpload = require("./routes/VideoUploadRoute/VideoUploader");
 const corsOptions = require("./config/CorsOption");
 
 connectDB();
@@ -21,16 +22,18 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
+
+// middleware to save the uploaded files in the server
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// to save the videos in the server
+app.use("/videos", express.static(path.join(__dirname, "videos")));
 app.use(express.urlencoded({ extended: true }));
 
-
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*'); 
-  next()
-})
+  res.header("Access-Control-Allow-Origin", "*");
+  next();
+});
 // ---Database connection
-
 
 // -----------Shared Roudets start---------//
 app.use("/", Shared);
@@ -56,7 +59,9 @@ app.use("/", paymentRoute);
 app.use("/", pdfuploads);
 // -----------PdfUpload Roudets End---------//
 
-app.get("/", ( req,res) => {
+// video upload route
+app.use("/", videoUpload);
+app.get("/", (req, res) => {
   res.send("School Network Server is Connected");
 });
 app.listen(port, (req, res) => {
