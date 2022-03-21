@@ -47,7 +47,7 @@ const concessionFormSchema = mongoose.Schema({
     required: false,
   },
   details: {
-    type: Number,
+    type: String,
     required: false,
   },
 });

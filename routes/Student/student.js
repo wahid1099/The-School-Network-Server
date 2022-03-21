@@ -148,13 +148,14 @@ router.get("/getMontlyPayment", async (req, res) => {
 
 //   student Concession  Form
 router.post("/concessionForm", async (req, res) => {
-  const FormData = new concessionFormSchema(req.body);
-  console.log("FormData", FormData);
+  // model creation through the schema
+  const newRequest = new concessionFormSchema(req.body);
   try {
-    await FormData.save();
-    res.send({ concessionForm: "concession Form" });
+    const savedRequest = await newRequest.save();
+
+    res.status(200).json(savedRequest);
   } catch (err) {
-    console.log(err);
+    res.status(500).json(err);
   }
 });
 
