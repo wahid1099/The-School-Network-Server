@@ -146,7 +146,7 @@ router.get("/getMontlyPayment", async (req, res) => {
   }
 });
 
-//   student Concession  Form
+//   student Concession  Form submit
 router.post("/concessionForm", async (req, res) => {
   // model creation through the schema
   const newRequest = new concessionFormSchema(req.body);
