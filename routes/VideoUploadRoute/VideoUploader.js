@@ -49,7 +49,7 @@ router.get("/videos", async (req, res) => {
   const target_class = req.query.class;
   console.log(target_class);
   const filter = { target_class: target_class };
-  const filter2 = { target_class: "All" };
+  const filter2 = { target_class: "all" };
   const forAll = await VideoModel.find(filter2);
   try {
     const result = await VideoModel.find(filter);
@@ -62,8 +62,8 @@ router.get("/videos", async (req, res) => {
 
 // get individual video by id
 
-router.get("/video/:id", async (req, res) => {
-  const id = req.params.id;
+router.get("/video", async (req, res) => {
+  const id = req.query.id;
   const filter = { _id: ObjectId(id) };
   try {
     const result = await VideoModel.findOne(filter);
