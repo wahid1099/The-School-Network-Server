@@ -21,6 +21,11 @@ const examRoutineCollection = new mongoose.model(
     "examRoutineCollection",
     examRoutineSchema
 );
+const attendanceSchema = require("../../models/Teacher/attendanceSchema");
+const attendanceCollection = new mongoose.model(
+    "attendanceCollection",
+    attendanceSchema
+);
 
 //geting all student extra care
 router.get("/requestCare", async (req, res) => {
@@ -169,6 +174,17 @@ router.delete("/DeleteExamRoutine", async (req, res) => {
     } catch (error) {
         console.log(error);
     }
+});
+
+// Add Attendance Data
+router.put("/AddAttendanceData", async (req, res) => {
+    const email = req.body.email;
+    const month = req.body.month;
+    const query = { email: email, month: month };
+    const add = await attendanceCollection.findOneAndUpdate(query, req.body, {
+        upsert: true,
+    });
+    res.send(add);
 });
 
 module.exports = router;
