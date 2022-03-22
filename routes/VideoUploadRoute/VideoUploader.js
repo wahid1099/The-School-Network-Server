@@ -42,4 +42,21 @@ router.post("/videoUpload", async (req, res) => {
   }
 });
 
+// get all the videos
+
+router.get("/videos", async (req, res) => {
+  const target_class = req.query.class;
+  console.log(target_class);
+  const filter = { target_class: target_class };
+  const filter2 = { target_class: "All" };
+  const forAll = await VideoModel.find(filter2);
+  try {
+    const result = await VideoModel.find(filter);
+    const newResult = [...result, ...forAll];
+    res.send(newResult);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 module.exports = router;
