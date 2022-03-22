@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const fileUpload = require("express-fileupload");
 const VideoModel = require("../../models/VideoModel/VideoModel");
 const path = require("path");
+const { ObjectId } = require("mongodb");
 
 // teacher video upload
 
@@ -54,6 +55,19 @@ router.get("/videos", async (req, res) => {
     const result = await VideoModel.find(filter);
     const newResult = [...result, ...forAll];
     res.send(newResult);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+// get individual video by id
+
+router.get("/video/:id", async (req, res) => {
+  const id = req.params.id;
+  const filter = { _id: ObjectId(id) };
+  try {
+    const result = await VideoModel.findOne(filter);
+    res.send(result);
   } catch (err) {
     console.log(err);
   }
