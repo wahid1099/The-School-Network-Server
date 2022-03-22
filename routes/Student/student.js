@@ -15,6 +15,12 @@ const StudentNoticeCollection = new mongoose.model(
 const MonthlyPayment = require("../../models/Principal/PaymentUplaodSchema");
 const concessionFormSchema = require("../../models/Student/concessionForm");
 
+const attendanceSchema = require("../../models/Teacher/attendanceSchema");
+const attendanceCollection = new mongoose.model(
+  "attendanceCollection",
+  attendanceSchema
+);
+
 //student request care
 
 router.post("/requestCare", async (req, res) => {
@@ -154,6 +160,18 @@ router.post("/concessionForm", async (req, res) => {
     const savedRequest = await newRequest.save();
 
     res.status(200).json(savedRequest);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// get student Attendance Collections
+router.get("/studentAttendanceCollections", async (req, res) => {
+  const email = req.query.email;
+  try {
+    const results = await attendanceCollection.find({ email: email });
+
+    res.status(200).json(results);
   } catch (err) {
     res.status(500).json(err);
   }
