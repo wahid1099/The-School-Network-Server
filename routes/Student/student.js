@@ -250,5 +250,29 @@ router.get("/GetNotification", async (req, res) => {
     res.status(500).json(err);
   }
 });
+//   student Concession  Form submit
+router.post("/concessionForm", async (req, res) => {
+  // model creation through the schema
+  const newRequest = new concessionFormSchema(req.body);
+  try {
+    const savedRequest = await newRequest.save();
+
+    res.status(200).json(savedRequest);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// get student Attendance Collections
+router.get("/studentAttendanceCollections", async (req, res) => {
+  const email = req.query.email;
+  try {
+    const results = await attendanceCollection.find({ email: email });
+
+    res.status(200).json(results);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
 
 module.exports = router;
