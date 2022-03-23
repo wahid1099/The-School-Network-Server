@@ -45,6 +45,21 @@ const MonthlyPayment = mongoose.Schema({
         type: String,
         required: false
     },
+    paymentStatus:{
+        type: String,
+        required: false
+    },
+    tran_id:{
+      type: String,
+      required: false
+    },
+    paymentNumber:{
+      type: String,
+      required: false
+    },
+    paymentDate:{
+        type: String
+    }
 })
 
 module.exports = mongoose.model("MonthlyPayment", MonthlyPayment);

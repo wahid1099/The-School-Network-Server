@@ -1,14 +1,20 @@
 const mongoose = require("mongoose");
 
 const connectDB = async () => {
+  const mongouri = `mongodb+srv://${process.env.USERDB}:${process.env.USERPASS}@cluster0.vsy2x.mongodb.net/TheSchoolNetwork?retryWrites=true&w=majority`;
   try {
-    const conn = await mongoose.connect(`mongodb+srv://${process.env.USERDB}:${process.env.USERPASS}@cluster0.vsy2x.mongodb.net/TheSchoolNetwork?retryWrites=true&w=majority`);
-
-    console.log(`MongoDB Connected`);
-  } catch (error) {
-    console.log(error);
-    process.exit(1);
-  }
+    await mongoose.connect(
+      mongouri,
+      {
+        useUnifiedTopology: true,
+        useNewUrlParser: true, 
+      },
+      console.log("connected to database")
+    );
+  }catch (error) {
+      console.log(error); 
+      process.exit(1);
+    }
 };
 
 module.exports = connectDB;
