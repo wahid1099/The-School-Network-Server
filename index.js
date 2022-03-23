@@ -18,7 +18,7 @@ const videoUpload = require("./routes/VideoUploadRoute/VideoUploader");
 
 connectDB();
 //middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(fileUpload());
 
@@ -60,6 +60,7 @@ app.use("/", pdfuploads);
 
 // video upload route
 app.use("/", videoUpload);
+
 app.get("/", (req, res) => {
   res.send("School Network Server is Connected");
 });

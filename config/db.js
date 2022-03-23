@@ -7,14 +7,14 @@ const connectDB = async () => {
       mongouri,
       {
         useUnifiedTopology: true,
-        useNewUrlParser: true, 
+        useNewUrlParser: true,
       },
       console.log("connected to database")
     );
-  }catch (error) {
-      console.log(error); 
-      process.exit(1);
-    }
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
 };
 
 module.exports = connectDB;
