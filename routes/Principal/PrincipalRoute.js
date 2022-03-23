@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const noticeSchema = require("../../models/Principal/NoticeScema");
 const TeacherNotice = new mongoose.model("TeacherNotice", noticeSchema);
 const AnnouncementSchema = require("../../models/Principal/AnnouncementScema");
+const concessionFormSchema = require("../../models/Student/concessionForm");
 const UserAnnouncement = new mongoose.model(
   "UserAnnouncement",
   AnnouncementSchema
@@ -134,11 +135,19 @@ router.post("/UploadMonthlyPayment", async (req, res) => {
   const notice = await MonthlyPayment.insertMany(req.body);
   res.send({ post: "successfully" });
 });
+
 //Principal geting all teacher info
 router.get("/GetAllTeachers", async (req, res) => {
   const teacher = await UserCollection.find({ role: "Teacher" });
   res.send(teacher);
 });
+
+//Principal geting Concession Form data
+router.get("/ConcessionFormData", async (req, res) => {
+  const data = await concessionFormSchema.find({});
+  res.send(data);
+});
+
 //Principal geting individual monthly payment details of students
 router.get("/GetlPaymentDetails", async (req, res) => {
   const email = req.query.email;
@@ -172,6 +181,14 @@ router.delete("/RemoveTeacher/:id", async (req, res) => {
   const teacher = await UserCollection.deleteOne(query);
 
   res.send({ success: "Deleted" });
+});
+
+//Get Individual ConcessionForm data
+router.get("/GetSingleData/:id", async (req, res) => {
+  const id = req.params.id;
+  console.log("ids", id);
+  const care = await concessionFormSchema.findOne({ _id: Object(id) });
+  res.send(care);
 });
 
 module.exports = router;
