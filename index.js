@@ -18,7 +18,7 @@ const videoUpload = require("./routes/VideoUploadRoute/VideoUploader");
 
 connectDB();
 //middleware
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
 
@@ -28,10 +28,6 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/videos", express.static(path.join(__dirname, "videos")));
 app.use(express.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
-});
 // ---Database connection
 
 // -----------Shared Roudets start---------//
