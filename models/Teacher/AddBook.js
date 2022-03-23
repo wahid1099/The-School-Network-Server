@@ -18,6 +18,9 @@ const BookCollection = mongoose.Schema({
     },
     bookImg:{
         type: mongoose.Mixed
+    },
+    bookId:{
+        type: String
     }
 });
 
