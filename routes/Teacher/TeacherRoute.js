@@ -18,7 +18,9 @@ const userSchema = require("../../models/Shared/UserSchema");
 const userCollection = new mongoose.model("usercollection", userSchema);
 const BookCollection = require("../../models/Teacher/AddBook");
 const ObjectId = require('mongodb').ObjectId; 
-
+const LentBookCollection = require('../../models/Student/Lentbook');
+const LentBookCollectionTwo = require('../../models/Student/LendBookTwo');
+const NotificationCollection = require("../../models/Teacher/Notification");
 
 //geting all student extra care
 router.get("/requestCare", async (req, res) => {
@@ -56,13 +58,15 @@ router.post("/assignmentPublish", async (req, res) => {
 //Publishing Image Notice
 router.post("/PublishImageAssing", async (req, res) => {
     const front = req.files.noticeImage.data;
-
+    const data = req.body;
     const encodedpic1 = front.toString("base64");
     const img = Buffer.from(encodedpic1, "base64");
-    const notice = new StudentAssignmentCollection({ img: img });
 
+    const assignMentData = {...data, img}
+    const assignMent = new StudentAssignmentCollection(assignMentData);
+    
     try {
-        await notice.save();
+        await assignMent.save();
         
         res.send({ success: "success" });
     } catch (er) {
@@ -131,7 +135,6 @@ router.put("/AddTeacherInfo", async (req, res) => {
 // Add teacher info
 router.get("/GetIndividualCare/:id", async (req, res) => {
     const id = req.params.id;
-    console.log('ids', id)
     const care = await RequestCare.findOne({_id: Object(id)})
     
     res.send(care);
@@ -178,7 +181,7 @@ router.get("/GetEditBook/:id", async (req, res) => {
 
 // put Edit books
 router.put("/SubmitEditedBook/:id", async (req, res) => {
-    console.log('hitted', req.params.id)
+  
     const book = req.body
     const query = {_id: ObjectId(req.params.id)}
     const update = await BookCollection.findOneAndUpdate(
@@ -191,5 +194,30 @@ router.put("/SubmitEditedBook/:id", async (req, res) => {
     
     res.send({success: 'success'});
 });
+
+// deleting books
+router.delete("/DeleteBook/:id", async (req, res) => {
+ 
+    const query = {_id: ObjectId(req.params.id)}
+    const book = await BookCollection.deleteOne(query)
+
+    res.send({deleted: 'delete'});
+}); 
+
+// get all lent books
+router.get("/GetAllLendBooks", async (req, res) => {
+    const books = await LentBookCollectionTwo.find({})
+    const BoookList = books?.sort(function(a, b){return books.indexOf(b) - books.indexOf(a)});
+    res.send(BoookList);
+});
+
+// sending notification
+router.post("/NotifyStudents", async (req, res) => {
+    const data = req.body
+    const books = new NotificationCollection(data)
+    await books.save()
+
+    res.json(books);
+}); 
 
 module.exports = router;
