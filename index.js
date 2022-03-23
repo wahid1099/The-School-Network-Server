@@ -14,7 +14,6 @@ const Shared = require("./routes/Shared/SharedRoute");
 const teacher = require("./routes/Teacher/TeacherRoute");
 const paymentRoute = require("./routes/PaymentRoute/PaymentRoute");
 const pdfuploads = require("./routes/PdfUplaodRoute/PdfUploader");
-const corsOptions = require("./config/CorsOption");
 
 connectDB();
 //middleware
