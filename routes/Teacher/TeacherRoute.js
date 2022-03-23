@@ -21,6 +21,21 @@ const ObjectId = require('mongodb').ObjectId;
 const LentBookCollection = require('../../models/Student/Lentbook');
 const LentBookCollectionTwo = require('../../models/Student/LendBookTwo');
 const NotificationCollection = require("../../models/Teacher/Notification");
+const classRoutineSchema = require("../../models/Teacher/ClassRoutineSchema");
+const classRoutineCollection = new mongoose.model(
+  "classRoutineCollection",
+  classRoutineSchema
+);
+const examRoutineSchema = require("../../models/Teacher/ExamRoutineSchema");
+const examRoutineCollection = new mongoose.model(
+  "examRoutineCollection",
+  examRoutineSchema
+);
+const attendanceSchema = require("../../models/Teacher/attendanceSchema");
+const attendanceCollection = new mongoose.model(
+  "attendanceCollection",
+  attendanceSchema
+);
 
 //geting all student extra care
 router.get("/requestCare", async (req, res) => {
@@ -219,5 +234,85 @@ router.post("/NotifyStudents", async (req, res) => {
 
     res.json(books);
 }); 
+// Upload Class Routine
+router.post("/UploadClassRoutine", async (req, res) => {
+  const front = req.files.routineImg.data;
+  const studentClass = req.query.class;
+  const section = req.query.section;
+
+  const encodedpic1 = front.toString("base64");
+  const routineImg = Buffer.from(encodedpic1, "base64");
+
+  const data = { routineImg, class: studentClass, section };
+
+  const routine = new classRoutineCollection(data);
+  try {
+    await routine.save();
+    res.send({ success: "success" });
+  } catch (er) {
+    console.log(er);
+  }
+});
+
+// Upload Exam Routine
+router.post("/UploadExamRoutine", async (req, res) => {
+  const front = req.files.routineImg.data;
+  const studentClass = req.query.class;
+  const term = req.query.term;
+
+  const encodedpic1 = front.toString("base64");
+  const routineImg = Buffer.from(encodedpic1, "base64");
+
+  const data = { routineImg, class: studentClass, term };
+
+  const routine = new examRoutineCollection(data);
+  try {
+    await routine.save();
+    res.send({ success: "success" });
+  } catch (er) {
+    console.log(er);
+  }
+});
+
+// Get All Class Routine
+router.get("/GetClassRoutine", async (req, res) => {
+  res.send(await classRoutineCollection.find({}));
+});
+
+// Get All Exam Routine
+router.get("/GetExamRoutine", async (req, res) => {
+  res.send(await examRoutineCollection.find({}));
+});
+
+// Delete A Class Routine
+router.delete("/DeleteClassRoutine", async (req, res) => {
+  try {
+    await classRoutineCollection.deleteOne({ _id: ObjectId(req.query.id) });
+    res.send({ success: "success" });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// Delete A Exam Routine
+router.delete("/DeleteExamRoutine", async (req, res) => {
+  try {
+    await examRoutineCollection.deleteOne({ _id: ObjectId(req.query.id) });
+    res.send({ success: "success" });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+// Add Attendance Data
+router.put("/AddAttendanceData", async (req, res) => {
+  const email = req.body.email;
+  const month = req.body.month;
+  const query = { email: email, month: month };
+  const add = await attendanceCollection.findOneAndUpdate(query, req.body, {
+    upsert: true,
+  });
+  res.send(add);
+});
 
 module.exports = router;
