@@ -14,14 +14,18 @@ const Shared = require("./routes/Shared/SharedRoute");
 const teacher = require("./routes/Teacher/TeacherRoute");
 const paymentRoute = require("./routes/PaymentRoute/PaymentRoute");
 const pdfuploads = require("./routes/PdfUplaodRoute/PdfUploader");
-const corsOptions = require("./config/CorsOption");
+const videoUpload = require("./routes/VideoUploadRoute/VideoUploader");
 
 connectDB();
 //middleware
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(fileUpload());
+
+// middleware to save the uploaded files in the server
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// to save the videos in the server
+app.use("/videos", express.static(path.join(__dirname, "videos")));
 app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
@@ -53,6 +57,9 @@ app.use("/", paymentRoute);
 // -----------PdfUpload Roudets Start---------//
 app.use("/", pdfuploads);
 // -----------PdfUpload Roudets End---------//
+
+// video upload route
+app.use("/", videoUpload);
 
 app.get("/", (req, res) => {
   res.send("School Network Server is Connected");

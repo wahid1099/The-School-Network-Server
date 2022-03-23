@@ -12,9 +12,13 @@ const AssingmentSchema = mongoose.Schema({
     },
     img:{
         type: mongoose.Mixed,
+    },
+    class:{
+        type: String,
+    },
+    submssionarray:{
+        type: Array
     }
-    
-    
 });
 
 module.exports =AssingmentSchema;
