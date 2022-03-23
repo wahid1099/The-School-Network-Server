@@ -14,7 +14,9 @@ const Shared = require("./routes/Shared/SharedRoute");
 const teacher = require("./routes/Teacher/TeacherRoute");
 const paymentRoute = require("./routes/PaymentRoute/PaymentRoute");
 const pdfuploads = require("./routes/PdfUplaodRoute/PdfUploader");
+const corsOptions = require("./config/CorsOption");
 
+connectDB();
 //middleware
 app.use(cors());
 app.use(express.json());
@@ -22,8 +24,13 @@ app.use(fileUpload());
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.urlencoded({ extended: true }));
 
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*'); 
+  next()
+})
 // ---Database connection
-connectDB();
+
 
 // -----------Shared Roudets start---------//
 app.use("/", Shared);
