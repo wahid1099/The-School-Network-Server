@@ -1,24 +1,23 @@
 const mongoose = require("mongoose");
 
-const AssingmentSchema = mongoose.Schema({
+const AssignmentSchema = mongoose.Schema({
     title: {
         type: String,
         required: false,
     },
-    
     description: {
         type: String,
         required: false,
     },
-    img:{
+    img: {
         type: mongoose.Mixed,
     },
-    class:{
+    class: {
         type: String,
     },
-    submssionarray:{
-        type: Array
-    }
+    submssionarray: {
+        type: Array,
+    },
 });
 
-module.exports =AssingmentSchema;
+module.exports = AssignmentSchema;
