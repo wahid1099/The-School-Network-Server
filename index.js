@@ -3,9 +3,11 @@ const app = express();
 const cors = require("cors");
 const dotenv = require("dotenv").config();
 const fileUpload = require("express-fileupload");
-const connectDB = require("./config/db");
+// const connectDB = require("./config/db");
 const port = process.env.PORT || 5000;
 const path = require("path");
+
+const mongoose = require("mongoose");
 
 // import route
 const principal = require("./routes/Principal/PrincipalRoute");
@@ -16,17 +18,36 @@ const paymentRoute = require("./routes/PaymentRoute/PaymentRoute");
 const pdfuploads = require("./routes/PdfUplaodRoute/PdfUploader");
 const videoUpload = require("./routes/VideoUploadRoute/VideoUploader");
 
-connectDB();
+
 //middleware
 app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
-
+app.use(express.urlencoded({ extended: true }));
 // middleware to save the uploaded files in the server
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // to save the videos in the server
 app.use("/videos", express.static(path.join(__dirname, "videos")));
-app.use(express.urlencoded({ extended: true }));
+
+
+
+const connectDB = async () => {
+  const mongouri = `mongodb+srv://${process.env.USERDB}:${process.env.USERPASS}@cluster0.vsy2x.mongodb.net/TheSchoolNetwork?retryWrites=true&w=majority`;
+  try {
+       mongoose.connect(
+      mongouri,
+      {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+      },
+      console.log("connected to database")
+    );
+  } catch (error) {
+    console.log(error);
+ 
+  }
+};
+connectDB().catch(console.dir)
 
 // ---Database connection
 
