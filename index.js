@@ -3,11 +3,9 @@ const app = express();
 const cors = require("cors");
 const dotenv = require("dotenv").config();
 const fileUpload = require("express-fileupload");
-// const connectDB = require("./config/db");
+const connectDB = require("./config/db");
 const port = process.env.PORT || 5000;
 const path = require("path");
-
-const mongoose = require("mongoose");
 
 // import route
 const principal = require("./routes/Principal/PrincipalRoute");
@@ -29,25 +27,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 // to save the videos in the server
 app.use("/videos", express.static(path.join(__dirname, "videos")));
 
-
-
-const connectDB = async () => {
-  const mongouri = `mongodb+srv://${process.env.USERDB}:${process.env.USERPASS}@cluster0.vsy2x.mongodb.net/TheSchoolNetwork?retryWrites=true&w=majority`;
-  try {
-       mongoose.connect(
-      mongouri,
-      {
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-      },
-      console.log("connected to database")
-    );
-  } catch (error) {
-    console.log(error);
- 
-  }
-};
-connectDB().catch(console.dir)
+connectDB()
 
 // ---Database connection
 
