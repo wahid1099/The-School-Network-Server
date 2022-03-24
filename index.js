@@ -28,10 +28,6 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/videos", express.static(path.join(__dirname, "videos")));
 app.use(express.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
-});
 // ---Database connection
 
 // -----------Shared Roudets start---------//
@@ -60,6 +56,7 @@ app.use("/", pdfuploads);
 
 // video upload route
 app.use("/", videoUpload);
+
 app.get("/", (req, res) => {
   res.send("School Network Server is Connected");
 });

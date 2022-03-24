@@ -1,8 +1,6 @@
 const router = require("express").Router();
 const mongoose = require("mongoose");
-const Student = require("../../models/Student/studentModels");
 const RequestCare = require("../../models/Student/requestCare");
-const { db } = require("../../models/Student/studentModels");
 const ResultSchema = require("../../models/Shared/ResultSchema");
 const ResultCollection = new mongoose.model("ResultCollection", ResultSchema);
 const UserSchema = require("../../models/Shared/UserSchema");
@@ -24,18 +22,12 @@ const ObjectId = require("mongodb").ObjectId;
 const BookCollection = require("../../models/Teacher/AddBook");
 const { v4: uuidv4 } = require("uuid");
 const NotificationCollection = require("../../models/Teacher/Notification");
-
-//Student notes Submit
-router.post("/notesSubmit", async (req, res) => {
-    const newPost = new Student(req.body);
-    try {
-        const savedPost = await newPost.save();
-
-        res.status(200).json(savedPost);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
+const attendanceSchema = require("../../models/Teacher/attendanceSchema");
+const attendanceCollection = new mongoose.model(
+  "attendanceCollection",
+  attendanceSchema
+);
+const concessionFormSchema = require("../../models/Student/concessionForm");
 
 //student request care
 
@@ -261,6 +253,30 @@ router.get("/GetNotification", async (req, res) => {
     } catch (err) {
         res.status(500).json(err);
     }
+});
+//   student Concession  Form submit
+router.post("/concessionForm", async (req, res) => {
+  // model creation through the schema
+  const newRequest = new concessionFormSchema(req.body);
+  try {
+    const savedRequest = await newRequest.save();
+
+    res.status(200).json(savedRequest);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+});
+
+// get student Attendance Collections
+router.get("/studentAttendanceCollections", async (req, res) => {
+  const email = req.query.email;
+  try {
+    const results = await attendanceCollection.find({ email: email });
+
+    res.status(200).json(results);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 module.exports = router;
