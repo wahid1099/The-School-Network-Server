@@ -15,11 +15,10 @@ const teacher = require("./routes/Teacher/TeacherRoute");
 const paymentRoute = require("./routes/PaymentRoute/PaymentRoute");
 const pdfuploads = require("./routes/PdfUplaodRoute/PdfUploader");
 const videoUpload = require("./routes/VideoUploadRoute/VideoUploader");
-const corsOptions = require("./config/CorsOption");
 
 connectDB();
 //middleware
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(fileUpload());
 
