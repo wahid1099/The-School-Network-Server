@@ -33,7 +33,6 @@ const attendanceCollection = new mongoose.model(
     attendanceSchema
 );
 const BookCollection = require("../../models/Teacher/AddBook");
-const ObjectId = require("mongodb").ObjectId;
 const LentBookCollection = require("../../models/Student/Lentbook");
 const LentBookCollectionTwo = require("../../models/Student/LendBookTwo");
 const NotificationCollection = require("../../models/Teacher/Notification");
