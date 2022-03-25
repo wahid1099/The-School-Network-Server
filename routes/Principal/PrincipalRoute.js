@@ -12,6 +12,7 @@ const MonthlyPayment = require("../../models/Principal/PaymentUplaodSchema");
 const userSchema = require("../../models/Shared/UserSchema");
 const UserCollection = new mongoose.model("UserCollection", userSchema);
 const ObjectId = require("mongodb").ObjectId;
+const AddmissionFormCollection = require("../../models/PaymentModel/PaymentModel");
 
 //Publishing Text Notice
 router.post("/publisNotice", async (req, res) => {
