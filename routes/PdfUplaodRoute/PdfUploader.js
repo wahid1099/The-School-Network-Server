@@ -53,10 +53,10 @@ router.get("/GetAllPdfs", async (req, res) => {
     try {
         // no need for database name, only the schema name is enough to fetch data
         const studentpDf = await PdfModel.find(); //here RequestCare is the schema name
-        res.set("Access-Control-Allow-Origin", "*");
+  
         res.status(200).json(studentpDf);
     } catch (err) {
-        res.set("Access-Control-Allow-Origin", "*");
+  
         res.status(500).json(err);
     }
 });

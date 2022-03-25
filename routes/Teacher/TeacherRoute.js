@@ -315,4 +315,13 @@ router.put("/AddAttendanceData", async (req, res) => {
   res.send(add);
 });
 
+// Get submitted assignments
+router.get("/GetSubmittedAssignments", async (req, res) => {
+  const submissions = await StudentAssignmentCollection.findOne({
+      _id: ObjectId(req.query.id),
+  });
+  res.send(submissions);
+});
+
+
 module.exports = router;
