@@ -279,5 +279,4 @@ router.get("/studentAttendanceCollections", async (req, res) => {
   }
 });
 
-//pull request
 module.exports = router;
