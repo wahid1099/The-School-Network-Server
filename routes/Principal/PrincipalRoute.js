@@ -133,7 +133,6 @@ router.put("/PutEditAnnouncement/:id", async (req, res) => {
 });
 //Principal posting monthly payment
 router.post("/UploadMonthlyPayment", async (req, res) => {
-
   const notice = await MonthlyPayment.insertMany(req.body);
   res.send({ post: "successfully" });
 });
